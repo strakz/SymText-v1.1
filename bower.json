@@ -1,0 +1,27 @@
+{
+  "name": "SymText",
+  "description": "",
+  "main": "",
+  "authors": [
+    "Straka Lukas"
+  ],
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/lib",
+    "test",
+    "tests"
+  ],
+  "dependencies":{
+    "angular": "~1.5.3",
+    "angular-resource": "~1.5.3",
+    "angular-cookies": "~1.5.3",
+    "angular-messages": "~1.5.3",
+    "angular-route": "~1.5.3",
+    "angular-strap": "*",
+    "moment": "*"
+  }
+}

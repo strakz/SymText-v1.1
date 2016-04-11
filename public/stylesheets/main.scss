@@ -1,0 +1,431 @@
+/**** VARIABLES ****/
+
+// Overriding Bootstraps defaults
+$brand-primary: #125DAB;
+$input-border-focus: $brand-primary;
+
+$border-radius-base: 0px;
+$border-radius-large: 0;
+$border-radius-small: 0 !important;
+
+//List
+$hidden-groups-disabled: true;
+
+
+//Menu-bar
+$navbar-height:50px;
+$activebar-height: 4px;
+$progressbar-height: $activebar-height;
+
+
+$mw-font-path: '../fonts';
+
+
+html, body {
+  height: 100%;
+}
+
+//@import "compass/css3";
+//
+//@import "sass-bootstrap/lib/bootstrap";
+//@import "font-awesome/scss/font-awesome";
+
+//@import "common";
+//@import "spinner";
+//@import "progress";
+//@import "animations";
+//@import "../modules/ui/styles/mw";
+//@import "../modules/ui/styles/mw-relution-font";
+
+//
+// Custom (non-bootstrap) Variables
+// --------------------------------------------------
+
+$footerHeight: 50px;
+$subHeaderMarginTop: 20px;
+$subHeaderMarginBottom: $subHeaderMarginTop + 10px;
+
+$android-brand-color: #99cc00;
+$ios-brand-color: #444;
+$weblink-color: #3389c4;
+$public-color: #9D1F82;
+$webapp-color: #50C4A6;
+
+$samsung-brand-color: #1428A0;
+$motorola-brand-color: #5C92FA;
+$htc-brand-color: #69B40F;
+$lg-brand-color: #C40950;
+$sony-brand-color: #c4049e;
+$acer-brand-color: #84b71e;
+
+//$device-compliant-color: $brand-success;
+//$device-noncompliant-color: $brand-danger;
+//$device-inactive-color: $brand-warning;
+//$device-withdrawn-color: $brand-info;
+//$device-deleted-color: $gray-light;
+
+$min-width: 300px;
+
+.btn:focus {
+  outline: none;
+}
+
+::-moz-selection { background: transparent; text-shadow: none; }
+::selection { background:transparent; text-shadow: none; }
+
+input::selection,
+textarea::selection
+{
+  background-color: #efefef;
+  color: $brand-primary;
+}
+
+input::-moz-selection,
+textarea::-moz-selection
+{
+  background-color: #efefef;
+  color: $brand-primary;
+}
+
+body {
+  min-width: $min-width;
+
+  .margin-left-0 {
+    margin-left:0 !important;
+  };
+
+  // Workaround to make popovers visible in modals
+  .popover {
+    z-index: 10000;
+    max-width: 320px;
+  }
+
+  // Add border radius to app images althoug bootstrap defaults for border-radius are set to 0
+  .img-rounded {
+    border-radius: 10px;
+  }
+
+  //Position font awesome icons relative
+  .fa {
+    position: relative;
+  }
+
+  // Position icon of block buttons to the left
+  a.btn-block,
+  button.btn-block {
+    position: relative;
+
+    .fa,
+    .glyphicon,
+    .rln-icon{
+      top: 1px;
+      left: 13px;
+      float: left;
+      position: relative;
+    }
+
+    .rln-icon{
+      font-size: 18px;
+      left: 12px;
+    }
+  }
+
+  .btn-borderless{
+    border:none;
+    background: none;
+  }
+
+  *[draggable] {
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+    /* Required to make elements draggable in old WebKit */
+    -khtml-user-drag: element;
+    -webkit-user-drag: element;
+    cursor: pointer;
+    cursor: -moz-grab;
+    cursor: -webkit-grab;
+  }
+
+  .label {
+    position: relative;
+
+    &.label-icon{
+      font-size: 12px;
+      vertical-align: middle;
+      margin: 3px;
+      width: 30px;
+      height: 20px;
+
+      i{
+        color: white;
+        display: inline;
+      }
+    }
+
+    .label-badge {
+      pointer-events: none;
+      position: absolute;
+      right: -5px;
+      bottom: -5px;
+      color: white;
+      padding: 3px 5px;
+      text-align: center;
+      border-radius: 50%;
+      font-size: 9px;
+      z-index: 9;
+      width: 17px;
+      height: 17px;
+
+      //&.label-badge-default {
+      //  @include label-variant($label-default-bg);
+      //}
+      //
+      //&.label-badge-primary {
+      //  @include label-variant($label-primary-bg);
+      //}
+      //
+      //&.label-badge-success {
+      //  @include label-variant($label-success-bg);
+      //}
+      //
+      //&.label-badge-info {
+      //  @include label-variant($label-info-bg);
+      //}
+      //
+      //&.label-badge-warning {
+      //  @include label-variant($label-warning-bg);
+      //}
+      //
+      //&.label-badge-danger {
+      //  @include label-variant($label-danger-bg);
+      //}
+
+      .rln-icon,
+      .fa{
+        color:white;
+      }
+    }
+  }
+
+  .table > thead > tr > th,
+  .table > thead > tr > td,
+  .table > tbody > tr > th,
+  .table > tbody > tr > td,
+  .table > tfoot > tr > th,
+  .table > tfoot > tr > td {
+    vertical-align: middle;
+  }
+
+  .table.table-striped > tbody > tr > th,
+  .table.table-striped > thead > tr > th,
+  .table.table-striped > tfoot > tr > th,
+  .table.table-striped > tbody > tr > td,
+  .table.table-striped > thead > tr > td,
+  .table.table-striped > tfoot > tr > td
+  {
+    border-top: none;
+  }
+
+  .table > tbody > tr {
+    & > th {
+      width: 30%;
+    }
+    & th + td {
+      width: 70%;
+    }
+
+    &.divider {
+      td {
+        border-bottom: 3px solid #ddd;
+        line-height: 0;
+        padding: 0;
+        height: 0;
+      }
+    }
+
+    td.truncated {
+      max-width: 200px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+
+  //.table > tbody > tr > td a {
+  //  color: $text-color;
+  //}
+
+  .no-text-decoration {
+    text-decoration: none !important;
+  }
+
+  div > header {
+    height: $navbar-height;
+    //@import "appnotifications";
+    //@import "navigation";
+  }
+
+  &:not(.authenticated){
+    background: #fafafa;
+    overflow-y: auto;
+    min-height: 400px;
+  }
+
+  &:not(.authenticated) div > header {
+    height: 0;
+  }
+
+  &.authenticated{
+    .login{
+      opacity:0 !important;
+      //background: white !important;
+    }
+  }
+
+  code, pre {
+    color: $brand-primary;
+    white-space: pre-line;
+  }
+
+  .height-inherit{
+    height: inherit;
+  }
+
+  .no-input {
+    border: none;
+    box-shadow: none;
+    padding: 0px;
+    margin: 0px;
+    background: none !important;
+    -webkit-appearance: none;
+    resize: none;
+    overflow: auto;
+    cursor: default !important;
+
+    &:focus {
+      box-shadow: none;
+      outline: 0;
+    }
+  }
+
+
+  div.module-page {
+    margin: 0 1.5em;
+    //@import "header";
+    //@import "sidebar";
+    //@import "session";
+    @import "footer";
+    //@import "navigation";
+    //@import "session";
+    //@import "login";
+    //@import "dashboards";
+    //@import "apps";
+  }
+
+  .footer-spacer {
+    height: $footerHeight;
+  }
+
+  .img-thumbnail {
+    transition: none;
+    -webkit-transition: none;
+  }
+
+  .dropdown-toggle {
+    cursor: pointer;
+  }
+
+  .dropdown-menu {
+    border: none;
+    border-radius: 0;
+  }
+
+  #rlnStartup {
+    text-align: center;
+    top: 0;
+    position: absolute;
+    bottom: 0;
+    margin: auto;
+    left: 0;
+    right: 0;
+    height: 97px;
+
+    h1 {
+      font-size: 20px;
+      margin: 0;
+      font-weight: 100;
+      color: #ccc;
+      text-shadow: 0 1px 0 #FFFFFF;
+    }
+    .loading-indicator {
+      width: 100%;
+      height: 3px;
+      background: #f5f5f5;
+      margin-top: -5px;
+      position: relative;
+      margin-bottom: 8px;
+
+      .indicator {
+        width: 100%;
+        height: 100%;
+
+        //@include background(
+        //                linear-gradient(left, rgba($brand-primary, 0) 0%, rgba($brand-primary, 0.7) 50%, rgba($brand-primary, 0) 100%)
+        //);
+
+        animation: loading 2s cubic-bezier(.56, .62, 1, 1) 0 infinite;
+        -webkit-animation: loading 2s cubic-bezier(.56, .62, 1, 1) infinite; /* Safari and Chrome */
+      }
+    }
+  }
+
+  .portal-routing-error {
+    .mw-empty-state {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      margin: auto auto;
+      height: 200px;
+
+      .circle {
+        position: absolute;
+        left: 0;
+        right: 0;
+        background: $brand-primary;
+        width: 300px;
+        height: 300px;
+        margin: auto;
+        border-radius: 50%;
+        color: white;
+        font-size: 116px;
+        font-weight: 100;
+        padding: 67px 0;
+        z-index: -1;
+        opacity: 0.4;
+        margin-top: -143px;
+      }
+
+      h2 {
+        color: #777;
+      }
+    }
+  }
+
+  @import "footer";
+
+  // The margin of the folder icon of bootstrap is too close to the content coming after it
+  span[mw-icon="folder-open"] {
+    margin-right: 5px;
+  }
+}
+
+/* Keep this statement at the bottom of this file!!
+ * see angularJS API for more info about this ngCloak.
+ * http://docs.angularjs.org/api/ng.directive:ngCloak
+ */
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+  display: none !important;
+}

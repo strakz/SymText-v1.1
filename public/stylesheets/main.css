@@ -1,0 +1,258 @@
+/**** VARIABLES ****/
+html, body {
+  height: 100%; }
+
+.btn:focus {
+  outline: none; }
+
+::-moz-selection {
+  background: transparent;
+  text-shadow: none; }
+
+::selection {
+  background: transparent;
+  text-shadow: none; }
+
+input::selection,
+textarea::selection {
+  background-color: #efefef;
+  color: #125DAB; }
+
+input::-moz-selection,
+textarea::-moz-selection {
+  background-color: #efefef;
+  color: #125DAB; }
+
+body {
+  min-width: 300px; }
+  body .margin-left-0 {
+    margin-left: 0 !important; }
+  body .popover {
+    z-index: 10000;
+    max-width: 320px; }
+  body .img-rounded {
+    border-radius: 10px; }
+  body .fa {
+    position: relative; }
+  body a.btn-block,
+  body button.btn-block {
+    position: relative; }
+    body a.btn-block .fa,
+    body a.btn-block .glyphicon,
+    body a.btn-block .rln-icon,
+    body button.btn-block .fa,
+    body button.btn-block .glyphicon,
+    body button.btn-block .rln-icon {
+      top: 1px;
+      left: 13px;
+      float: left;
+      position: relative; }
+    body a.btn-block .rln-icon,
+    body button.btn-block .rln-icon {
+      font-size: 18px;
+      left: 12px; }
+  body .btn-borderless {
+    border: none;
+    background: none; }
+  body *[draggable] {
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+    /* Required to make elements draggable in old WebKit */
+    -khtml-user-drag: element;
+    -webkit-user-drag: element;
+    cursor: pointer;
+    cursor: -moz-grab;
+    cursor: -webkit-grab; }
+  body .label {
+    position: relative; }
+    body .label.label-icon {
+      font-size: 12px;
+      vertical-align: middle;
+      margin: 3px;
+      width: 30px;
+      height: 20px; }
+      body .label.label-icon i {
+        color: white;
+        display: inline; }
+    body .label .label-badge {
+      pointer-events: none;
+      position: absolute;
+      right: -5px;
+      bottom: -5px;
+      color: white;
+      padding: 3px 5px;
+      text-align: center;
+      border-radius: 50%;
+      font-size: 9px;
+      z-index: 9;
+      width: 17px;
+      height: 17px; }
+      body .label .label-badge .rln-icon,
+      body .label .label-badge .fa {
+        color: white; }
+  body .table > thead > tr > th,
+  body .table > thead > tr > td,
+  body .table > tbody > tr > th,
+  body .table > tbody > tr > td,
+  body .table > tfoot > tr > th,
+  body .table > tfoot > tr > td {
+    vertical-align: middle; }
+  body .table.table-striped > tbody > tr > th,
+  body .table.table-striped > thead > tr > th,
+  body .table.table-striped > tfoot > tr > th,
+  body .table.table-striped > tbody > tr > td,
+  body .table.table-striped > thead > tr > td,
+  body .table.table-striped > tfoot > tr > td {
+    border-top: none; }
+  body .table > tbody > tr > th {
+    width: 30%; }
+  body .table > tbody > tr th + td {
+    width: 70%; }
+  body .table > tbody > tr.divider td {
+    border-bottom: 3px solid #ddd;
+    line-height: 0;
+    padding: 0;
+    height: 0; }
+  body .table > tbody > tr td.truncated {
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis; }
+  body .no-text-decoration {
+    text-decoration: none !important; }
+  body div > header {
+    height: 50px; }
+  body:not(.authenticated) {
+    background: #fafafa;
+    overflow-y: auto;
+    min-height: 400px; }
+  body:not(.authenticated) div > header {
+    height: 0; }
+  body.authenticated .login {
+    opacity: 0 !important; }
+  body code, body pre {
+    color: #125DAB;
+    white-space: pre-line; }
+  body .height-inherit {
+    height: inherit; }
+  body .no-input {
+    border: none;
+    box-shadow: none;
+    padding: 0px;
+    margin: 0px;
+    background: none !important;
+    -webkit-appearance: none;
+    resize: none;
+    overflow: auto;
+    cursor: default !important; }
+    body .no-input:focus {
+      box-shadow: none;
+      outline: 0; }
+  body div.module-page {
+    margin: 0 1.5em; }
+    body div.module-page footer {
+      height: 50px;
+      min-width: 300px;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background-color: #f7f7f7;
+      text-align: center;
+      text-shadow: 0 1px 0 #FFFFFF;
+      z-index: 102;
+      padding: 0 20px; }
+      body div.module-page footer .credit {
+        margin: 5px 0;
+        font-size: 10px; }
+      body div.module-page footer .version-number {
+        color: #ccc; }
+  body .footer-spacer {
+    height: 50px; }
+  body .img-thumbnail {
+    transition: none;
+    -webkit-transition: none; }
+  body .dropdown-toggle {
+    cursor: pointer; }
+  body .dropdown-menu {
+    border: none;
+    border-radius: 0; }
+  body #rlnStartup {
+    text-align: center;
+    top: 0;
+    position: absolute;
+    bottom: 0;
+    margin: auto;
+    left: 0;
+    right: 0;
+    height: 97px; }
+    body #rlnStartup h1 {
+      font-size: 20px;
+      margin: 0;
+      font-weight: 100;
+      color: #ccc;
+      text-shadow: 0 1px 0 #FFFFFF; }
+    body #rlnStartup .loading-indicator {
+      width: 100%;
+      height: 3px;
+      background: #f5f5f5;
+      margin-top: -5px;
+      position: relative;
+      margin-bottom: 8px; }
+      body #rlnStartup .loading-indicator .indicator {
+        width: 100%;
+        height: 100%;
+        animation: loading 2s cubic-bezier(0.56, 0.62, 1, 1) 0 infinite;
+        -webkit-animation: loading 2s cubic-bezier(0.56, 0.62, 1, 1) infinite;
+        /* Safari and Chrome */ }
+  body .portal-routing-error .mw-empty-state {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto auto;
+    height: 200px; }
+    body .portal-routing-error .mw-empty-state .circle {
+      position: absolute;
+      left: 0;
+      right: 0;
+      background: #125DAB;
+      width: 300px;
+      height: 300px;
+      margin: auto;
+      border-radius: 50%;
+      color: white;
+      font-size: 116px;
+      font-weight: 100;
+      padding: 67px 0;
+      z-index: -1;
+      opacity: 0.4;
+      margin-top: -143px; }
+    body .portal-routing-error .mw-empty-state h2 {
+      color: #777; }
+  body footer {
+    height: 50px;
+    min-width: 300px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: #f7f7f7;
+    text-align: center;
+    text-shadow: 0 1px 0 #FFFFFF;
+    z-index: 102;
+    padding: 0 20px; }
+    body footer .credit {
+      margin: 5px 0;
+      font-size: 10px; }
+    body footer .version-number {
+      color: #ccc; }
+  body span[mw-icon="folder-open"] {
+    margin-right: 5px; }
+
+/* Keep this statement at the bottom of this file!!
+ * see angularJS API for more info about this ngCloak.
+ * http://docs.angularjs.org/api/ng.directive:ngCloak
+ */
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+  display: none !important; }

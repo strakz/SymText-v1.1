@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html ng-app="SymText">
+<head>
+    <base href="/">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SymbolTxt</title>
+    <link rel="icon" type="image/png" href="favicon.png"/>
+    <link href="stylesheets/stajl.css" rel="stylesheet">
+    <link href="stylesheets/main.css" rel="stylesheet">
+</head>
+<body>
+
+<div ng-include="'templates/navbar.html'"></div>
+
+<div ng-view></div>
+<div class="footer-spacer"></div>
+<footer ng-include="'templates/_footer.html'"></footer>
+
+
+<script src="components/angular/angular.js"></script>
+<script src="components/angular-strap/dist/angular-strap.js"></script>
+<script src="components/angular-strap/dist/angular-strap.tpl.js"></script>
+<script src="components/angular-messages/angular-messages.js"></script>
+<script src="components/angular-resource/angular-resource.js"></script>
+<script src="components/angular-route/angular-route.js"></script>
+<script src="components/angular-cookies/angular-cookies.js"></script>
+<script src="components/moment/min/moment.min.js"></script>
+
+<script src="app.js"></script>
+<script src="directives/checkPass.js"></script>
+<script src="controllers/navbar.js"></script>
+<script src="controllers/login.js"></script>
+<script src="controllers/signup.js"></script>
+<script src="controllers/main.js"></script>
+<script src="services/auth.js"></script>
+
+
+</body>
+</html>
