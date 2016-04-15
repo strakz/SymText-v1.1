@@ -4,11 +4,11 @@ angular.module('SymText', ['ngCookies', 'ngResource', 'ngMessages', 'ngRoute','m
         $routeProvider
             .when('/', {
                 templateUrl: 'templates/home.html',
-                controller: 'MainCtrl'
+                //controller: 'MainCtrl'
             })
-            .when('/shows/:id', {
-                templateUrl: 'templates/detail.html',
-                controller: 'DetailCtrl'
+            .when('/freeWrite', {
+                templateUrl: 'templates/freeWrite.html',
+                controller: 'FreeWrtCtrl'
             })
             .when('/login', {
                 templateUrl: 'templates/login.html',
@@ -18,9 +18,16 @@ angular.module('SymText', ['ngCookies', 'ngResource', 'ngMessages', 'ngRoute','m
                 templateUrl: 'templates/signup.html',
                 controller: 'SignupCtrl'
             })
-            .when('/add', {
-                templateUrl: 'templates/add.html',
-                controller: 'AddCtrl'
+            .when('/adminmenu',{
+                templateUrl: 'templates/adminMenu.html'
+            })
+            .when('/addtodb', {
+                templateUrl: 'templates/addtoDB.html'
+                //controller: 'AddCtrl'
+            })
+            .when('/createWord',{
+                templateUrl: 'templates/createWord.html',
+                controller: 'CreateWordCtrl'
             })
             .otherwise({
                 redirectTo: '/'

@@ -1,50 +1,53 @@
 angular.module('SymText')
     .factory('Auth', ['$http', '$location', '$rootScope', '$cookieStore', '$alert',
-        function($http, $location, $rootScope, $cookieStore, $alert) {
+        function ($http, $location, $rootScope, $cookieStore, $alert) {
             $rootScope.currentUser = $cookieStore.get('user');
             $cookieStore.remove('user');
 
             return {
-                login: function(user) {
+                login: function (user) {
                     return $http.post('/api/login', user)
-                        .success(function(data) {
+                        .success(function (data) {
                             $rootScope.currentUser = data;
-                            $location.path('/');
-
+                            if (data.role === 1) {
+                                $location.path('/adminmenu');
+                            }else if(data.role===0){
+                                $location.path('/');
+                            }
                             $alert({
-                                title: 'Cheers!',
-                                content: 'You have successfully logged in.',
+                                title: 'Vitajte!',
+                                content: 'Úspešne ste sa prihlásili.',
                                 placement: 'top-right',
                                 type: 'success',
                                 duration: 3
                             });
                         })
-                        .error(function() {
+                        .error(function () {
                             $alert({
-                                title: 'Error!',
-                                content: 'Invalid username or password.',
+                                title: 'Chyba!',
+                                content: 'Zle zadané prihlasovacie meno alebo heslo.',
                                 placement: 'top-right',
                                 type: 'danger',
                                 duration: 3
                             });
                         });
                 },
-                signup: function(user) {
+                signup: function (user) {
                     return $http.post('/api/signup', user)
-                        .success(function() {
+                        .success(function () {
                             $location.path('/login');
 
                             $alert({
-                                title: 'Congratulations!',
-                                content: 'Your account has been created.',
+                                title: 'Vitajte!',
+                                content: 'Registrácia prebehla úspešne.',
                                 placement: 'top-right',
                                 type: 'success',
                                 duration: 3
                             });
                         })
-                        .error(function(response) {
+                        .error(function (response) {
                             $alert({
-                                title: 'Error!',
+                                title: 'Chyba!',
                                 content: response.data,
                                 placement: 'top-right',
                                 type: 'danger',
@@ -52,12 +55,12 @@ angular.module('SymText')
                             });
                         });
                 },
-                logout: function() {
-                    return $http.get('/api/logout').success(function() {
+                logout: function () {
+                    return $http.get('/api/logout').success(function () {
                         $rootScope.currentUser = null;
                         $cookieStore.remove('user');
                         $alert({
-                            content: 'You have been logged out.',
+                            content: 'Úspešne ste sa odhlásili.',
                             placement: 'top-right',
                             type: 'info',
                             duration: 3

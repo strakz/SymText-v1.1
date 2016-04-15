@@ -6,16 +6,26 @@
             Symbol-<strong>Text</strong> Education</a>
     </div>
     <ul class="nav navbar-nav">
-        <li data-match-route="/$"><a href="/">Hlavná stránka</a></li>
+        <li data-match-route="/"><a href="/">Hlavná stránka</a></li>
         <li data-match-route="/add"><a href="/add">daco</a></li>
-        <li data-match-route="/test"><a href="/test">Testovanie</a> </li>
+        <li data-match-route="/freeWrite"><a href="/freeWrite">Voľné písanie</a> </li>
+        <li data-match-route="/createWord"><a href="/createWord">Vytvorenie slova</a> </li>
     </ul>
+
+    <!--TOTO SA ZOBRAZUJE IBA PRIHLASENEMU ADMINISTRATOROVI V NAV-PANELY-->
+    <ul class="nav navbar-nav" ng-if="currentUser.role===1">
+        <li data-match-route="/adminmenu"><a href="/adminmenu">Admin Menu</a> </li>
+        <li data-match-route="/signup"><a href="/signup">Registracia ucitela</a> </li>
+    </ul>
+
+
     <ul class="nav navbar-nav pull-right" ng-if="!currentUser">
         <li data-match-route="/login"><a href="/login"><span class="glyphicon glyphicon-log-in"></span> Prihlásenie učiteľa</a></li>
-        <li data-match-route="/signup"><a href="/signup">Sign up</a></li>
+        <li data-match-route="/signup"><a href="/signup">Registrácia </a></li>
     </ul>
     <ul class="nav navbar-nav pull-right" ng-if="currentUser">
-        <li class="navbar-text"> <span class="glyphicon glyphicon-user"> </span> ng-bind="currentUser.username" </li>
+        <li class="navbar-text"><span class="glyphicon glyphicon-user"></span> Prihlásený používateľ:</li>
+        <li class="navbar-text" ng-bind="currentUser.fullname"></li>
         <li><a href="javascript:void(0)" ng-click="logout()"><span class="glyphicon glyphicon-log-out"></span>Odhlásiť</a></li>
     </ul>
 </div>

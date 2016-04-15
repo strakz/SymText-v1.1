@@ -124,10 +124,18 @@ em {
 .btn {
   border-radius: 2px;
 }
+.center-formEx {
+  width: 50%;
+  margin: 3% auto;
+
+  input {
+    border-radius: 0;
+  }
+}
 
 .center-form {
   width: 330px;
-  margin: 10% auto;
+  margin: 3% auto;
 
   input {
     border-radius: 0;

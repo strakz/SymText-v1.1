@@ -16,6 +16,13 @@ var dbUrl = 'localhost/daco';
 
 var app = express();
 
+var wordSchema = new mongoose.Schema({
+    word: {type: String, unique: true},
+    wordType: String,
+    filename: String
+});
+
+
 var userSchema = new mongoose.Schema({
     username: {type: String, unique: true, required: true},
     password: {type: String, required: true},
@@ -48,7 +55,7 @@ userSchema.methods.comparePassword = function (candidatePassword, cb) {
     });
 };
 
-
+var Word = mongoose.model('Word', wordSchema);
 var User = mongoose.model('User', userSchema);
 mongoose.connect('mongodb://localhost/daco');
 
@@ -118,9 +125,27 @@ app.use(function (req, res, next) {
 app.get('*', function (req, res) {
     res.redirect('/#' + req.originalUrl);
 });
+//save to Word schema
+app.post('/api/words', function (req, res) {
+    console.log('daco tu pisem');
+    console.log(req.body.word);
 
+    var word = new Word({
+        word: req.body.word,
+        wordType: req.body.wordType,
+        filename: req.body.filename
+    });
+    word.save(function (err, word) {
 
-app.post('/api/login', passport.authenticate('local'), function(req, res) {
+        if (err) {
+            res.send(err);
+        }
+        res.json(word);
+
+    })
+});
+
+app.post('/api/login', passport.authenticate('local'), function (req, res) {
     res.cookie('user', JSON.stringify(req.user));
     res.send(req.user);
 });
@@ -139,6 +164,24 @@ app.post('/api/signup', function (req, res, next) {
     });
 });
 
+app.post('/api/hladaj', function (req, res) {
+    console.log('text len tak ci tu dosiel');
+    //console.log('tu je daco?' + req.body);
+    //var query = {};
+    //query.slovo = new RegExp(req.body.slovo, 'i');
+var query = req.body.slovo;
+    console.log(query);
+    Word.findOne({word:query},'filename', function (err, word) {
+            if (err) {
+                return res.status(400).send({msg: " error during search DB"});
+                //if (!doc) return next(new Error('cant find'));
+            }
+                console.log(word);
+            return res.status(200).send(word);
+    //        res.send('odoslane');
+        }
+    )
+});
 
 app.get('/api/logout', function (req, res, next) {
     req.logout();
@@ -153,7 +196,7 @@ function ensureAuthenticated(req, res, next) {
 
 app.use(function (err, req, res, next) {
     console.error(err.stack);
-    res.send(500, {message: err.message});
+    res.status(500).send({message: err.message});
 });
 
 
