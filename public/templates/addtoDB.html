@@ -1,10 +1,28 @@
 <div class="container">
     <div class="row">
         <div class="center-formEx panel">
-            <form method="POST" action="/addToDB" enctype="multipart/form-data">
-                <input type="text" name="textfield"><br/>
+            <form method="POST" action="/api/imgUp" enctype="multipart/form-data">
+                <input type="text" name="textfield" placeholder="slovo"><br/>
+                <input type="text" name="textfield2" placeholder="alias"><br/>
                 <input type="file" name="filefield"><br/>
                 <input type="submit">
+            </form>
+
+            <form method="POST" action="/metadata">
+                <input type="text" name="metaField"><br/>
+
+                <input type="submit">
+            </form>
+
+            <form method="POST" action="/nieco">
+                <input type="text" name="imgID"><br/>
+
+                <input type="submit">
+            </form>
+
+            <form method="POST" action="/testujem">
+
+                <input type="submit" value="test">
             </form>
         </div>
     </div>

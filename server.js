@@ -4,6 +4,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
+var multer = require('multer');
 var bcrypt = require('bcryptjs');
 var session = require('express-session');
 var passport = require('passport');
@@ -13,13 +14,20 @@ var request = require('request');
 var xml2js = require('xml2js');
 var _ = require('lodash');
 var dbUrl = 'localhost/daco';
+var fs = require('fs');
+var Grid = require('gridfs-stream');
+var Busboy = require('busboy');
 
 var app = express();
+
+
+
 
 var wordSchema = new mongoose.Schema({
     word: {type: String, unique: true},
     wordType: String,
-    filename: String
+    filename: String,
+    imageID : String
 });
 
 
@@ -54,10 +62,16 @@ userSchema.methods.comparePassword = function (candidatePassword, cb) {
         cb(null, isMatch);
     });
 };
+var imageSchema = new mongoose.Schema({});
 
 var Word = mongoose.model('Word', wordSchema);
 var User = mongoose.model('User', userSchema);
+var ImageDB = mongoose.model('imgDB',imageSchema );
 mongoose.connect('mongodb://localhost/daco');
+var conn = mongoose.connection;
+Grid.mongo = mongoose.mongo;
+var gfs = new Grid(conn.db);
+var idImg;
 
 passport.serializeUser(function (user, done) {
     done(null, user.id);
@@ -68,29 +82,6 @@ passport.deserializeUser(function (id, done) {
         done(err, user);
     });
 });
-//TOTO SOM PRIDAL
-//passport.use(new LocalStrategy(
-//    function (username, password, done) {
-//        User.findOne({username: username}, function (err, user) {
-//                if (err) {
-//                    return done(err);
-//                }
-//                if (!user) {
-//                    return done(null, false, {message: 'Incorrect username.'});
-//                }
-//                //if (user.comparePassword(password)) {
-//                //    return done(null, false, { message: 'Incorrect password.' });
-//                //}
-//                //return done(null, user);
-//                user.comparePassword(password, function (err, isMatch) {
-//                    if (err) return done(err);
-//                    if (isMatch) return done(null, user);
-//                    return done(null, false, {message: 'Incorrect password.'});
-//                });
-//            }
-//        )
-//    }
-//));
 
 
 passport.use(new LocalStrategy({usernameField: 'username'}, function (username, password, done) {
@@ -121,6 +112,7 @@ app.use(function (req, res, next) {
     }
     next();
 });
+//app.use(multer({dest: './uploads/'}));
 
 app.get('*', function (req, res) {
     res.redirect('/#' + req.originalUrl);
@@ -133,7 +125,8 @@ app.post('/api/words', function (req, res) {
     var word = new Word({
         word: req.body.word,
         wordType: req.body.wordType,
-        filename: req.body.filename
+        filename: req.body.filename,
+        imageID: idImg
     });
     word.save(function (err, word) {
 
@@ -144,6 +137,137 @@ app.post('/api/words', function (req, res) {
 
     })
 });
+// skuska save image to DB
+app.post('/api/imgUp', function(req,res){
+    console.log(req.headers);
+    console.log('Id Obrazka :'+idImg);
+    var value,val2;
+    if (req.method === 'POST') {
+        var busboy = new Busboy({
+            headers : req.headers
+        });
+        busboy.on('file', function(fieldname, file, filename, encoding,
+                                   mimetype) {
+            //console.log('daco jak fieldname'+req.body.texfield);
+            console.log('File [' + fieldname + ']: filename: ' + filename
+                + ', encoding: ' + encoding + ', mimetype: ' + mimetype);
+
+            console.log('slova'+val2+' ,' +value);
+//			var gfs = Grid(conn.db);
+            var ws = gfs.createWriteStream({
+                mode : 'w',
+                content_type : mimetype,
+                filename : filename,
+                aliases: val2,
+                metadata : {
+                    slovo: value
+
+                 }
+            });
+
+            ws.on('close', function(file) {
+                console.log(file._id);
+                idImg=file._id;
+            });
+
+            file.pipe(ws);
+            req.pipe(busboy);
+        });
+
+         //busboy.on('finish', function(){
+         //_return();
+         //});
+
+
+
+         //file.on('data', function(data) {
+         //console.log('File [' + fieldname + '] got ' + data.length
+         //+ ' bytes');
+         //});
+         //file.on('end', function() { console.log('File [' + fieldname + ']Finished');
+         //});
+
+        busboy.on('field', function(fieldname, val, fieldnameTruncated,
+                                    valTruncated, encoding, mimetype) {
+            console.log('Field [' + fieldname + ']: value: ' + val);
+            if(value ===null || value === undefined){
+                value=val;
+            }else{
+                val2=val;
+            }
+
+        });
+        busboy.on('finish', function() {
+            console.log('Done parsing form!');
+            console.log(idImg+'vs');
+            res.writeHead(303, {
+                Connection : 'close',
+                Location : '/createWord'
+            });
+            res.end();
+        });
+        req.pipe(busboy);
+    }
+});
+
+app.post('/metadata',function(req,res){
+    console.log(req.body.textfield) ;
+   console.log('Id z predchadyajucej veci' +idImg);
+    if (req.method === 'POST') {
+        var files = gfs.files.find({}).toArray(function(err, files) {
+            console.log('nazov '+files);
+            console.log(files);
+            console.log('pocet suborov je '+ files.length);
+            res.status(200).json(files);
+
+        });
+    }
+});
+
+
+//show image from mongo ..hlada podla ID ..
+app.post('/nieco', function(req,res){
+    if (req.method === 'POST') {
+    console.log('tusom v GET OBRAzok');
+        console.log(req.body.imgID);
+        var readstream = gfs.createReadStream({
+           _id: req.body.imgID
+            //metadata.slovo: req.body.imgID
+        });
+        readstream.on('error', function (err) {
+            console.log('An error occurred!', err);
+            throw err;
+        });
+
+        readstream.pipe(res);
+
+        // gfs.files.find({ filename: "ang.jpg" },function(err, files){
+        // // if(err) return next(err);
+        // //
+        // // if(files.length === 0){
+        // // return next(new Error('File does not exist'));
+        // // }
+        // var file = files[0];
+        // console.log(file);
+        // res.send(JSON.stringify(files))
+        // res.json(200, files);
+        // });
+    }
+})
+
+app.post('/testujem', function(req,res){
+
+    gfs.findOne({ filename:"jysk.jpg" },function(err, files){
+      if(err) return next(err);
+      if(files === null || files === undefined){
+      console.log ('nenaslo sa nic')
+      }
+     //var file = files[0];
+     console.log(files);
+     //res.send(JSON.stringify(files))
+     res.json(200, files);
+     });
+})
 
 app.post('/api/login', passport.authenticate('local'), function (req, res) {
     res.cookie('user', JSON.stringify(req.user));
@@ -171,7 +295,7 @@ app.post('/api/hladaj', function (req, res) {
     //query.slovo = new RegExp(req.body.slovo, 'i');
 var query = req.body.slovo;
     console.log(query);
-    Word.findOne({word:query},'filename', function (err, word) {
+    Word.findOne({word:query},'filename imageID', function (err, word) {
             if (err) {
                 return res.status(400).send({msg: " error during search DB"});
                 //if (!doc) return next(new Error('cant find'));
@@ -187,6 +311,8 @@ app.get('/api/logout', function (req, res, next) {
     req.logout();
     res.send(200);
 });
+
+
 
 
 function ensureAuthenticated(req, res, next) {

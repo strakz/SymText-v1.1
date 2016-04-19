@@ -15,13 +15,14 @@
     "test",
     "tests"
   ],
-  "dependencies":{
+  "dependencies": {
     "angular": "~1.5.3",
     "angular-resource": "~1.5.3",
     "angular-cookies": "~1.5.3",
     "angular-messages": "~1.5.3",
     "angular-route": "~1.5.3",
     "angular-strap": "*",
-    "moment": "*"
+    "moment": "*",
+    "angular-socket-io": "^0.7.0"
   }
 }
