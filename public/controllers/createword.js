@@ -1,7 +1,8 @@
 angular.module('SymText')
     .controller('CreateWordCtrl', ['$scope', '$http', '$alert', function ($scope, $http, $alert) {
-        $scope.word = {};
+        $scope.word = {singleSelect : null};
         var formdata = new FormData();
+        //$scope.data = {singleSelect :null};
         $scope.create = function () {
             $http.post('/api/words', $scope.word)
                 .success(function (data) {

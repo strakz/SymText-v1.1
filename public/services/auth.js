@@ -65,6 +65,7 @@ angular.module('SymText')
                             type: 'info',
                             duration: 3
                         });
+                        $location.path('/');
                     });
                 }
             };

@@ -65,17 +65,29 @@
                         </div>
                     </div>
 
-                    <div class="form-group"
-                         ng-class="{ 'has-success' : signupForm.role.$valid && signupForm.role.$dirty, 'has-error' : signupForm.role.$invalid && signupForm.role.$dirty }">
-                        <input class="form-control input-lg" type="role" id="role"
-                               name="role" ng-model="role" ng-maxlength="1"
-                              placeholder="Rola" ng-init="role='0'"
-                               autofocus>
+                    <div class="form-group">
+                         <!--ng-class="{ 'has-success' : signupForm.role.$valid && signupForm.role.$dirty, 'has-error' : signupForm.role.$invalid && signupForm.role.$dirty }">-->
+                        <!--<input class="form-control input-lg" type="role" id="role"-->
+                               <!--name="role" ng-model="role" ng-maxlength="1"-->
+                              <!--placeholder="Rola" ng-init="role='0'"-->
+                               <!--autofocus>-->
 
-                        <div class="help-block text-danger" ng-if="signupForm.role.$dirty"
-                             ng-messages="signupForm.role.$error">
-                             <div ng-message="maxlength">iba cislo 1 a 0</div>
-                            <!--<div ng-message="maxlength">Prihlasovacie meno musí obsahovať menej ako 20 znakov</div>-->
+                        <!--<div class="help-block text-danger" ng-if="signupForm.role.$dirty"-->
+                             <!--ng-messages="signupForm.role.$error">-->
+                             <!--<div ng-message="maxlength">iba cislo 1 a 0</div>-->
+                            <!--&lt;!&ndash;<div ng-message="maxlength">Prihlasovacie meno musí obsahovať menej ako 20 znakov</div>&ndash;&gt;-->
+                        <!--</div>-->
+
+                        <label class="input-lg" for="singleSelect"> Vyberte práva používateľa: </label><br>
+                        <select class="form-control input-lg" name="singleSelect"  ng-model="singleSelect" required >
+                            <option value="">Vyberte právo používateľa</option>
+                            <option value="0">Učiteľ</option>
+                            <option value="1">Administrátor</option>
+                         </select><br>
+                        <div class="help-block text-danger" ng-if="signupForm.$dirty"
+                             ng-messages="signupForm.$error">
+                            <div ng-message="required">Vyberte práva použivateľa</div>
+
                         </div>
                     </div>
 

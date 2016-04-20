@@ -18,16 +18,15 @@ var fs = require('fs');
 var Grid = require('gridfs-stream');
 var Busboy = require('busboy');
 
+
 var app = express();
-
-
 
 
 var wordSchema = new mongoose.Schema({
     word: {type: String, unique: true},
     wordType: String,
     filename: String,
-    imageID : String
+    imageID: String
 });
 
 
@@ -66,8 +65,8 @@ var imageSchema = new mongoose.Schema({});
 
 var Word = mongoose.model('Word', wordSchema);
 var User = mongoose.model('User', userSchema);
-var ImageDB = mongoose.model('imgDB',imageSchema );
-mongoose.connect('mongodb://localhost/daco');
+var ImageDB = mongoose.model('imgDB', imageSchema);
+mongoose.connect('mongodb://localhost/symtext');
 var conn = mongoose.connection;
 Grid.mongo = mongoose.mongo;
 var gfs = new Grid(conn.db);
@@ -121,15 +120,18 @@ app.get('*', function (req, res) {
 app.post('/api/words', function (req, res) {
     console.log('daco tu pisem');
     console.log(req.body.word);
-
+    console.log(req.body.singleSelect);
+    if(idImg ===null){
+        console.log('ziadne ID obrazku ku slovu nebolo priradene ');
+    }
     var word = new Word({
         word: req.body.word,
-        wordType: req.body.wordType,
+        wordType: req.body.singleSelect,
         filename: req.body.filename,
         imageID: idImg
     });
     word.save(function (err, word) {
-
+        idImg=null;
         if (err) {
             res.send(err);
         }
@@ -138,71 +140,70 @@ app.post('/api/words', function (req, res) {
     })
 });
 // skuska save image to DB
-app.post('/api/imgUp', function(req,res){
+app.post('/api/imgUp', function (req, res) {
     console.log(req.headers);
-    console.log('Id Obrazka :'+idImg);
-    var value,val2;
+    console.log('Id Obrazka :' + idImg);
+    var value, val2;
     if (req.method === 'POST') {
         var busboy = new Busboy({
-            headers : req.headers
+            headers: req.headers
         });
-        busboy.on('file', function(fieldname, file, filename, encoding,
-                                   mimetype) {
+        busboy.on('file', function (fieldname, file, filename, encoding,
+                                    mimetype) {
             //console.log('daco jak fieldname'+req.body.texfield);
             console.log('File [' + fieldname + ']: filename: ' + filename
                 + ', encoding: ' + encoding + ', mimetype: ' + mimetype);
 
-            console.log('slova'+val2+' ,' +value);
+            console.log('slova' + val2 + ' ,' + value);
 //			var gfs = Grid(conn.db);
             var ws = gfs.createWriteStream({
-                mode : 'w',
-                content_type : mimetype,
-                filename : filename,
+                mode: 'w',
+                content_type: mimetype,
+                filename: filename,
                 aliases: val2,
-                metadata : {
+                metadata: {
                     slovo: value
 
-                 }
+                }
             });
 
-            ws.on('close', function(file) {
+            ws.on('close', function (file) {
                 console.log(file._id);
-                idImg=file._id;
+                idImg = file._id;
             });
 
             file.pipe(ws);
             req.pipe(busboy);
         });
 
-         //busboy.on('finish', function(){
-         //_return();
-         //});
+        //busboy.on('finish', function(){
+        //_return();
+        //});
 
 
+        //file.on('data', function(data) {
+        //console.log('File [' + fieldname + '] got ' + data.length
+        //+ ' bytes');
+        //});
+        //file.on('end', function() { console.log('File [' + fieldname + ']Finished');
+        //});
 
-         //file.on('data', function(data) {
-         //console.log('File [' + fieldname + '] got ' + data.length
-         //+ ' bytes');
-         //});
-         //file.on('end', function() { console.log('File [' + fieldname + ']Finished');
-         //});
-
-        busboy.on('field', function(fieldname, val, fieldnameTruncated,
-                                    valTruncated, encoding, mimetype) {
+        busboy.on('field', function (fieldname, val, fieldnameTruncated,
+                                     valTruncated, encoding, mimetype) {
             console.log('Field [' + fieldname + ']: value: ' + val);
-            if(value ===null || value === undefined){
-                value=val;
-            }else{
-                val2=val;
+            if (value === null || value === undefined) {
+                value = val;
+            } else {
+                val2 = val;
             }
 
         });
-        busboy.on('finish', function() {
+        busboy.on('finish', function () {
             console.log('Done parsing form!');
-            console.log(idImg+'vs');
+            console.log(idImg + 'vs');
             res.writeHead(303, {
-                Connection : 'close',
-                Location : '/createWord'
+                Connection: 'close',
+                Location: '/createWord'
             });
             res.end();
         });
@@ -210,14 +211,14 @@ app.post('/api/imgUp', function(req,res){
     }
 });
 
-app.post('/metadata',function(req,res){
-    console.log(req.body.textfield) ;
-   console.log('Id z predchadyajucej veci' +idImg);
+app.post('/metadata', function (req, res) {
+    console.log(req.body.textfield);
+    console.log('Id z predchadyajucej veci' + idImg);
     if (req.method === 'POST') {
-        var files = gfs.files.find({}).toArray(function(err, files) {
-            console.log('nazov '+files);
+        var files = gfs.files.find({}).toArray(function (err, files) {
+            console.log('nazov ' + files);
             console.log(files);
-            console.log('pocet suborov je '+ files.length);
+            console.log('pocet suborov je ' + files.length);
             res.status(200).json(files);
 
         });
@@ -226,12 +227,12 @@ app.post('/metadata',function(req,res){
 
 
 //show image from mongo ..hlada podla ID ..
-app.post('/nieco', function(req,res){
+app.post('/nieco', function (req, res) {
     if (req.method === 'POST') {
-    console.log('tusom v GET OBRAzok');
+        console.log('tusom v GET OBRAzok');
         console.log(req.body.imgID);
         var readstream = gfs.createReadStream({
-           _id: req.body.imgID
+            _id: req.body.imgID
             //metadata.slovo: req.body.imgID
         });
         readstream.on('error', function (err) {
@@ -253,20 +254,51 @@ app.post('/nieco', function(req,res){
         // res.json(200, files);
         // });
     }
-})
+});
+app.get('/nieco:id', function (req, res) {
+    if (req.method === 'get') {
+        console.log('tusom v GET OBRAzok');
+        console.log(req.body.imgID);
+        console.log(req.params);
+        var readstream = gfs.createReadStream({
+            _id: req.body.imgID
+            //metadata.slovo: req.body.imgID
+        });
+        readstream.on('error', function (err) {
+            console.log('An error occurred!', err);
+            throw err;
+        });
 
-app.post('/testujem', function(req,res){
+        readstream.pipe(res);
 
-    gfs.findOne({ filename:"jysk.jpg" },function(err, files){
-      if(err) return next(err);
-      if(files === null || files === undefined){
-      console.log ('nenaslo sa nic')
-      }
-     //var file = files[0];
-     console.log(files);
-     //res.send(JSON.stringify(files))
-     res.json(200, files);
-     });
+        // gfs.files.find({ filename: "ang.jpg" },function(err, files){
+        // // if(err) return next(err);
+        // //
+        // // if(files.length === 0){
+        // // return next(new Error('File does not exist'));
+        // // }
+        // var file = files[0];
+        // console.log(file);
+        // res.send(JSON.stringify(files))
+        // res.json(200, files);
+        // });
+    }
+});
+
+
+
+app.post('/testujem', function (req, res) {
+
+    gfs.findOne({filename: "jysk.jpg"}, function (err, files) {
+        if (err) return next(err);
+        if (files === null || files === undefined) {
+            console.log('nenaslo sa nic')
+        }
+        //var file = files[0];
+        console.log(files);
+        //res.send(JSON.stringify(files))
+        res.json(200, files);
+    });
 })
 
 app.post('/api/login', passport.authenticate('local'), function (req, res) {
@@ -276,11 +308,12 @@ app.post('/api/login', passport.authenticate('local'), function (req, res) {
 
 
 app.post('/api/signup', function (req, res, next) {
+    console.log(req.body.singleSelect);
     var user = new User({
         username: req.body.username,
         password: req.body.password,
         fullname: req.body.fullname,
-        role: req.body.role
+        role: req.body.singleSelect
     });
     user.save(function (err) {
         if (err) return next(err);
@@ -293,26 +326,51 @@ app.post('/api/hladaj', function (req, res) {
     //console.log('tu je daco?' + req.body);
     //var query = {};
     //query.slovo = new RegExp(req.body.slovo, 'i');
-var query = req.body.slovo;
+    var query = req.body.slovo;
     console.log(query);
-    Word.findOne({word:query},'filename imageID', function (err, word) {
+    Word.findOne({word: query}, 'filename imageID', function (err, word) {
             if (err) {
                 return res.status(400).send({msg: " error during search DB"});
                 //if (!doc) return next(new Error('cant find'));
             }
-                console.log(word);
+            console.log(word);
             return res.status(200).send(word);
-    //        res.send('odoslane');
+            //        res.send('odoslane');
         }
     )
 });
+app.post('/api/searchExample', function (req, res) {
+
+    //var query = {};
+    //query.slovo = new RegExp(req.body.slovo, 'i');
+    var result;
+    console.log('som vo vnutri get');
+    var query = req.body.text;
+    console.log(query);
+    //Word.findOne({word: query}, 'wordType filename imageID', function (err, word) {
+      Word.find({'word': new RegExp(query, 'i')},'filename imageID word wordType', function(err,word){
+        if (err) {
+            return res.status(400).send({msg: " error during search DB"});
+            //if (!doc) return next(new Error('cant find'));
+        }
+        console.log(word);
+        result=word;
+        if (result === null) {
+            return res.status(200).send(null);
+        } else {
+            return res.status(200).send(result);
+            //        res.send('odoslane');
+        }
+    })
+
+
+});
+
 
 app.get('/api/logout', function (req, res, next) {
     req.logout();
     res.send(200);
 });
-
-
 
 
 function ensureAuthenticated(req, res, next) {

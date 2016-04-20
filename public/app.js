@@ -29,9 +29,13 @@ angular.module('SymText', ['ngCookies', 'ngResource', 'ngMessages', 'ngRoute','m
                 templateUrl: 'templates/createWord.html',
                 controller: 'CreateWordCtrl'
             })
-            .when('/test',{
+            .when('/imageupload',{
                 templateUrl: 'templates/fileUpload.html',
                 controller: 'imgupCtrl'
+            })
+            .when('/searchtest',{
+                templateUrl: 'templates/searching.html',
+                controller: 'SrchCtrl'
             })
             .otherwise({
                 redirectTo: '/'
