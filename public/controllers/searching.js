@@ -1,11 +1,11 @@
 angular.module('SymText')
     .controller('SrchCtrl', ['$scope', '$http', function ($scope, $http) {
         $scope.userInput = {};
-        if($scope.slovo === undefined){
-            $scope.slovo='';
+        if ($scope.slovo === undefined) {
+            $scope.slovo = '';
         }
-        if($scope.idimg === undefined){
-            $scope.idimg='';
+        if ($scope.idimg === undefined) {
+            $scope.idimg = '';
         }
 
         $scope.$watch('userInput.text', function () {
@@ -18,28 +18,51 @@ angular.module('SymText')
                 data: $scope.userInput
             }).success(function (response) {
                 console.log(response.length);
-                $scope.slovo='';
-                $scope.idimg='';
-                for(var i=0; i< response.length; i++) {
-                    console.log(response[i].word +' ma ID obrazku: '+ response[i].imageID);
-                   // console.log(angular.toJson(response[i].imageID));
-                    $scope.slovo += response[i].word+ ', ';
-                    $scope.idimg += response[i].imageID +', ';
+                $scope.slovo = '';
+                $scope.idimg = '';
+                if (response.length === 0) {
+                    $scope.slovo = 'Bohuzial slovo sa nenachádza v databáze';
+                }else {
+                    //$scope.slovo += response[i].word + ', ';
+                    //$scope.idimg += response[i].imageID + ', ';
+                    $scope.slovo=response.word;
+                    $scope.idimg =response.imageID
+                }
+                for (var i = 0; i < response.length; i++) {
+                    console.log(response[i].word + ' ma ID obrazku: ' + response[i].imageID);
+                    // console.log(angular.toJson(response[i].imageID));
+                    $scope.slovo += response[i].word + ', ';
+                    $scope.idimg += response[i].imageID + ', ';
                 }
             })
-            $http({
-                url: '/nieco',
-                method: 'get',
-                params :{
-                    id: response[0].imageID
-                }
-
-            }).success(function(response){
-                console.log(response);
-            });
+            //$http({
+            //    url: '/nieco',
+            //    method: 'get',
+            //    params :{
+            //        id: response[0].imageID
+            //    }
+            //
+            //}).success(function(response){
+            //    console.log(response);
+            //});
 
         })
+        $scope.$watch('userInput.obrazok', function () {
+            console.log('pise aj obrazok')
+            $http({
+                url: '/imgskuska',
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                data: $scope.userInput
+            }).success(function (response) {
+
+                //console.log(response);
+                $scope.data = response;
+            })
+        })
+
     }])
+
 
 //function showResult(){
 //    if (response.filename === undefined) {

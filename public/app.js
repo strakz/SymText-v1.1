@@ -31,11 +31,31 @@ angular.module('SymText', ['ngCookies', 'ngResource', 'ngMessages', 'ngRoute','m
             })
             .when('/imageupload',{
                 templateUrl: 'templates/fileUpload.html',
-                controller: 'imgupCtrl'
+                controller: 'ImgupCtrl'
             })
             .when('/searchtest',{
                 templateUrl: 'templates/searching.html',
                 controller: 'SrchCtrl'
+            })
+            .when('/userlist',{
+                templateUrl: 'templates/users.html',
+                controller: 'UserListCtrl'
+            })
+            .when('/wordlist',{
+                templateUrl: 'templates/wordlist.html',
+                controller: 'WordsListCtrl'
+            })
+            .when('/addnewords',{
+                templateUrl: 'templates/addnewWord.html',
+                //controller: 'WordsListCtrl'
+            })
+            .when('/textarea',{
+                templateUrl: 'templates/test.html',
+                controller: 'TestCtrl'
+            })
+            .when('/addwords',{
+                templateUrl: 'templates/addWords.html',
+                controller: 'AddWordsCtrl'
             })
             .otherwise({
                 redirectTo: '/'

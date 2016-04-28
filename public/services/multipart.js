@@ -11,5 +11,5 @@ angular.module('SymText').
             })
             .error(function(){
             });
-    }
+    };
 }])

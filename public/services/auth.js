@@ -47,11 +47,11 @@ angular.module('SymText')
                         })
                         .error(function (response) {
                             $alert({
-                                title: 'Chyba!',
+                                title: 'Chyba! Zadajte iné prihlasovacie meno',
                                 content: response.data,
                                 placement: 'top-right',
                                 type: 'danger',
-                                duration: 3
+                                duration: 10
                             });
                         });
                 },

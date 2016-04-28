@@ -1,8 +1,8 @@
 angular.module('SymText')
-    .controller('imgupCtrl', ['$scope', 'multipart', function($scope, multipart){
+    .controller('ImgupCtrl', ['$scope', 'fileUpload', function($scope, fileUpload){
     $scope.fileinfo = {};
     $scope.Submit = function(){
         var uploadUrl = '/upload';
-        multipart.post(uploadUrl, $scope.fileinfo);
+        fileUpload.post(uploadUrl, $scope.fileinfo);
     }
 }]);

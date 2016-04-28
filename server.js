@@ -155,38 +155,62 @@ app.post('/api/imgUp', function (req, res) {
                 + ', encoding: ' + encoding + ', mimetype: ' + mimetype);
 
             console.log('slova' + val2 + ' ,' + value);
-//			var gfs = Grid(conn.db);
-            var ws = gfs.createWriteStream({
-                mode: 'w',
-                content_type: mimetype,
-                filename: filename,
-                aliases: val2,
-                metadata: {
-                    slovo: value
+
+            // ----------kontrola ci sa uz subor nenachadza-------------
+            gfs.findOne({filename: filename}, function (err, files) {
+                if (err) return next(err);
+                if (files === null || files === undefined) {
+                    console.log('nenaslo sa nic');
+                    var ws = gfs.createWriteStream({
+                        mode: 'w',
+                        content_type: mimetype,
+                        filename: filename,
+                        aliases: val2,
+                        metadata: {
+                            slovo: value
+
+                        }
+                    });
+                    ws.on('close', function (file) {
+                        console.log(file._id);
+                        idImg = file._id;
+                    });
+                    file.pipe(ws);
+                    req.pipe(busboy);
+                }else{
+                    console.log('zhoda v nazve suboru')
+                    console.log(files._id);
+                    idImg= files._id;
+                    //res.sendStatus(200);
+                    res.writeHead(303, {
+                        Connection: 'close',
+                        Location: '/createWord'
+                    });
+                    res.end();
 
                 }
-            });
 
-            ws.on('close', function (file) {
-                console.log(file._id);
-                idImg = file._id;
-            });
+            })
 
-            file.pipe(ws);
-            req.pipe(busboy);
+            //var ws = gfs.createWriteStream({
+            //    mode: 'w',
+            //    content_type: mimetype,
+            //    filename: filename,
+            //    aliases: val2,
+            //    metadata: {
+            //        slovo: value
+            //
+            //    }
+            //});
+
+            //ws.on('close', function (file) {
+            //    console.log(file._id);
+            //    idImg = file._id;
+            //});
+
+            //file.pipe(ws);
+            //req.pipe(busboy);
         });
-
-        //busboy.on('finish', function(){
-        //_return();
-        //});
-
-
-        //file.on('data', function(data) {
-        //console.log('File [' + fieldname + '] got ' + data.length
-        //+ ' bytes');
-        //});
-        //file.on('end', function() { console.log('File [' + fieldname + ']Finished');
-        //});
 
         busboy.on('field', function (fieldname, val, fieldnameTruncated,
                                      valTruncated, encoding, mimetype) {
@@ -210,7 +234,7 @@ app.post('/api/imgUp', function (req, res) {
         req.pipe(busboy);
     }
 });
-
+//vypis vsetych dat z dB files
 app.post('/metadata', function (req, res) {
     console.log(req.body.textfield);
     console.log('Id z predchadyajucej veci' + idImg);
@@ -255,6 +279,7 @@ app.post('/nieco', function (req, res) {
         // });
     }
 });
+//nejde
 app.get('/nieco:id', function (req, res) {
     if (req.method === 'get') {
         console.log('tusom v GET OBRAzok');
@@ -284,27 +309,47 @@ app.get('/nieco:id', function (req, res) {
         // });
     }
 });
+//vracia list vsetkych pouzivatelov
+app.post('/api/getusers', function(req,res){
+    User.find( function (err, user) {
+        if(err) return res.send(err)
 
+        console.log(user);
+        return res.status(200).send(user);
 
+    })
+});
+//vrati list slov
+app.post('/api/getwords',function(req,res){
+    Word.find( function (err, word) {
+        if(err) return res.send(err)
+
+        console.log(word);
+        return res.status(200).send(word);
+
+    })
+});
 
 app.post('/testujem', function (req, res) {
 
-    gfs.findOne({filename: "jysk.jpg"}, function (err, files) {
+    gfs.findOne({filename: "car.png"}, function (err, files) {
         if (err) return next(err);
         if (files === null || files === undefined) {
             console.log('nenaslo sa nic')
+
         }
         //var file = files[0];
         console.log(files);
         //res.send(JSON.stringify(files))
         res.json(200, files);
     });
-})
+});
 
 app.post('/api/login', passport.authenticate('local'), function (req, res) {
     res.cookie('user', JSON.stringify(req.user));
     res.send(req.user);
 });
+
 
 
 app.post('/api/signup', function (req, res, next) {
@@ -317,7 +362,7 @@ app.post('/api/signup', function (req, res, next) {
     });
     user.save(function (err) {
         if (err) return next(err);
-        res.send(200);
+        res.sendStatus(200);
     });
 });
 
@@ -347,8 +392,8 @@ app.post('/api/searchExample', function (req, res) {
     console.log('som vo vnutri get');
     var query = req.body.text;
     console.log(query);
-    //Word.findOne({word: query}, 'wordType filename imageID', function (err, word) {
-      Word.find({'word': new RegExp(query, 'i')},'filename imageID word wordType', function(err,word){
+    Word.findOne({word: query}, 'word wordType filename imageID', function (err, word) {
+    //  Word.find({'word': new RegExp(query, 'i')},'filename imageID word wordType', function(err,word){
         if (err) {
             return res.status(400).send({msg: " error during search DB"});
             //if (!doc) return next(new Error('cant find'));
@@ -366,6 +411,123 @@ app.post('/api/searchExample', function (req, res) {
 
 });
 
+app.post('/api/wordsadd',function(req,res){
+    var word= req.body.mainWord;
+    var newWord = req.body.word;
+    var imageID;
+    var wordType;
+    console.log(req.body.mainWord);
+    console.log(req.body.word);
+    Word.findOne({word: word}, 'wordType filename imageID', function (err, word) {
+        if (err) {
+            return res.status(400).send({msg: " error during search DB"});
+            //if (!doc) return next(new Error('cant find'));
+        }
+
+
+        if (word === null) {
+            console.log('nenachadza sa v DB');
+            res.status(400).send({msg: "nic sa nenachadza v DB treba nove slovo"})
+        } else {
+            imageID=word.imageID;
+            wordType=word.wordType;
+            //console.log(word.imageID);
+            var wordDB = new Word({
+                word: newWord,
+                wordType: wordType,
+                filename: word.filename,
+                imageID: imageID
+            });
+            wordDB.save(function (err, word) {
+                idImg=null;
+                if (err) {
+                    res.send(err);
+                }
+                res.json(word);
+
+            })
+
+            //res.send(200)
+        }
+
+    })
+});
+app.post('/imgskuska', function(req, res){
+    //var files = gfs.files.find({}).toArray(function (err, files) {
+    //    //console.log('nazov ' + files[0].filename);
+    //   // console.log(files);
+    //    console.log('pocet suborov je ' + files.length);
+    //   // res.status(200).json(files);
+    //
+    //
+    //if (files.length>0){
+    //    for(var i = 0; i<files.length; i++){
+    //        console.log('nazov ' + files[i].filename);
+    //    }
+    //}
+    //});
+var imgid;
+    var fajlnejm
+    var result;
+    var query = req.body.obrazok;
+    console.log(query);
+    Word.findOne({word: query}, 'word wordType filename imageID', function (err, word) {
+        //  Word.find({'word': new RegExp(query, 'i')},'filename imageID word wordType', function(err,word){
+        if (err) {
+            return res.status(400).send({msg: " error during search DB"});
+            //if (!doc) return next(new Error('cant find'));
+        }
+        //console.log(word.imageID);
+        result=word;
+            if (result === null) {
+                return res.status(200).send(null);
+            } else {
+        //        return res.status(200).send(result);
+        //        //        res.send('odoslane');
+                console.log(result.imageID)
+                imgid = result.imageID
+
+                gfs.findOne({_id: imgid}, function (err, files) {
+                    if (err) return next(err);
+                    console.log(files.filename)
+                    fajlnejm=files.filename
+
+                var rstream = gfs.createReadStream(fajlnejm);
+                var bufs = [];
+                rstream.on('data', function(chunk) {
+                    bufs.push(chunk);
+                }).on('end', function() {
+// done
+                    var fbuf = Buffer.concat(bufs);
+                    var base64 = (fbuf.toString('base64'));
+                    //res.send('<img src="data:image/jpeg;base64,' + base64 + '">');
+                    //console.log(base64)
+                    res.send(base64);
+                });
+                })
+            }
+        //console.log(result)
+
+
+
+    })
+
+
+
+
+//    var rstream = gfs.createReadStream('car.png');
+//    var bufs = [];
+//    rstream.on('data', function(chunk) {
+//        bufs.push(chunk);
+//    }).on('end', function() {
+//// done
+//        var fbuf = Buffer.concat(bufs);
+//        var base64 = (fbuf.toString('base64'));
+//        //res.send('<img src="data:image/jpeg;base64,' + base64 + '">');
+//        //console.log(base64)
+//        res.send(base64);
+//    });
+})
 
 app.get('/api/logout', function (req, res, next) {
     req.logout();

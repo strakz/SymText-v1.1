@@ -1,9 +1,9 @@
 <div class="container">
   ´    <div class="row">
-        <div class="center-form panel">
+        <div class="center-formEx panel">
             <form method="post" ng-submit="create()" name="createWordForm">
                 <div class="panel-body">
-                    <h2 class="text-center">Vytvorenie slova do DB</h2>
+                    <h2 class="text-center">Prepojenie slova s nahratým obrázkom </h2>
 
                     <div class="form-group"
                          ng-class="{ 'has-success' : username.$valid && username.$dirty, 'has-error' : username.$invalid && username.$dirty }">
@@ -21,13 +21,13 @@
                     <div class="form-group"
                          ng-class="{ 'has-success' : wordType.$valid && wordType.$dirty, 'has-error' : wordType.$invalid && wordType.$dirty }">
                         <input class="form-control input-lg" type="text" name="wordType"
-                               ng-model="word.wordType" placeholder="slovny druh" required>
+                               ng-model="word.wordType" placeholder="kategoria slova" required>
 
-                        <div class="help-block text-danger"
-                             ng-if="wordType.$dirty"
-                             ng-messages="wordType.$error">
-                            <div ng-message="required">Zadajte slovny druh!</div>
-                        </div>
+                        <!--<div class="help-block text-danger"-->
+                             <!--ng-if="wordType.$dirty"-->
+                             <!--ng-messages="wordType.$error">-->
+                            <!--<div ng-message="required">Zadajte kategóriu</div>-->
+                        <!--</div>-->
                         <label class="input-lg" for="singleSelect"> Slovný druh: </label><br>
                         <select class="form-control input-lg" name="singleSelect"  ng-model="word.singleSelect" required>
                             <option value="podstatne">Podstatné meno</option>
