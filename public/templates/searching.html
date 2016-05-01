@@ -1,21 +1,79 @@
-<input type="text" ng-model="userInput.text" placeholder="Type something">
-<div >
-<img data-ng-src="data:image/png;base64,{{data}}"  width="20%"/>
+<!--<input type="text" ng-model="userInput.text" placeholder="Type something">-->
+<div class="container">
+    <h1 class="text-center" style="color:#c87f0a"> VYTVÁRANIE TESTU</h1>
     <br>
-<input type="text" ng-model="userInput.obrazok" placeholder="Type something" class="text-center" style="border-width: 0px ;width:20%">
-</div>
-<div >
-    <img data-ng-src="data:image/png;base64,{{data}}"  width="20%"/>
+<div class="row">
+<div class="col-sm-2 col-lg-2 col-xs-2">
+<img data-ng-src="data:image/png;base64,{{data}}"  width="100%"/>
     <br>
-    <input type="text" ng-model="userInput.obrazok" placeholder="Type something" class="text-center" style="border-width: 0px ;width:20%">
+    <h1 style="color:#258cd1;"><input type="text" ng-model="userInput.obrazok"  class="text-center" style="border-width: 0px ;width:100%" > </h1>
 </div>
-<div >
-    <img data-ng-src="data:image/png;base64,{{data}}"  width="20%"/>
+    <div class="col-sm-2 col-lg-2 col-xs-2">
+    <img data-ng-src="data:image/png;base64,{{data2}}"  width="100%"/>
     <br>
-    <input type="text" ng-model="userInput.obrazok" placeholder="Type something" class="text-center" style="border-width: 0px ;width:20%">
+        <h1 style="color:#258cd1;">  <input type="text" ng-model="userInput.obrazok2" class="text-center" style="border-width: 0px ;width:99%"></h1>
 </div>
-<p ng-bind="slovo"> slova </p>
-<p ng-bind="idimg">IDecka</p>
+    <div class="col-sm-2 col-lg-2 col-xs-2">
+    <img data-ng-src="data:image/png;base64,{{data3}}"  width="100%"/>
+    <br>
+        <h1 style="color:#d62c1a;"> <input type="text" ng-model="userInput.obrazok3"  class="text-center" style="border-width: 0px ;width:99%"></h1>
+</div>
+    <div class="col-sm-2 col-lg-2 col-xs-2">
+    <img data-ng-src="data:image/png;base64,{{data4}}"  width="100%"/>
+    <br>
+        <h1 style="color:#258cd1;"> <input type="text" ng-model="userInput.obrazok4"  class="text-center" style="border-width: 0px ;width:99%"></h1>
+</div>
+    <div class="col-sm-2 col-lg-2 col-xs-2">
+        <img data-ng-src="data:image/png;base64,{{data4}}"  width="100%"/>
+        <br>
+        <h1 style="color:#d62c1a;"> <input type="text" ng-model="userInput.obrazok9"  class="text-center" style="border-width: 0px ;width:99%"></h1>
+    </div>
+    <div class="col-sm-2 col-lg-2 col-xs-2">
+        <img data-ng-src="data:image/png;base64,{{data4}}"  width="100%"/>
+        <br>
+        <h1 style="color:#258cd1;"> <input type="text" ng-model="userInput.obrazok10"  class="text-center" style="border-width: 0px ;width:99%"></h1>
+    </div>
+</div>
 
-<!--<img data-ng-src="{{getImage(doc.image)}}" />-->
+<br>
+<div class="row">
+    <div class="col-sm-2 col-lg-2 col-xs-2">
+        <img data-ng-src="data:image/png;base64,{{data4}}"  width="100%"/>
+        <br>
+        <h1 style="color:#258cd1;"><input type="text" ng-model="userInput.obrazok5"  class="text-center" style="border-width: 0px ;width:100%" ></h1>
+    </div>
+    <div class="col-sm-2 col-lg-2 col-xs-2">
+        <img data-ng-src="data:image/png;base64,{{data2}}"  width="100%"/>
+        <br>
+        <h1 style="color:#258cd1;">  <input type="text" ng-model="userInput.obrazok6"  class="text-center" style="border-width: 0px ;width:99%"></h1>
+    </div>
+    <div class="col-sm-2 col-lg-2 col-xs-2">
+        <img data-ng-src="data:image/png;base64,{{data3}}"  width="100%"/>
+        <br>
+        <h1 style="color:#258cd1;"> <input type="text" ng-model="userInput.obrazok7"  class="text-center" style="border-width: 0px ;width:99%"></h1>
+    </div>
+    <div class="col-sm-2 col-lg-2 col-xs-2">
+        <img data-ng-src="data:image/png;base64,{{data4}}"  width="100%"/>
+        <br>
+        <h1 style="color:#258cd1;">  <input type="text" ng-model="userInput.obrazok8" class="text-center" style="border-width: 0px ;width:99%"></h1>
+    </div>
+    <div class="col-sm-2 col-lg-2 col-xs-2">
+        <img data-ng-src="data:image/png;base64,{{data3}}"  width="100%"/>
+        <br>
+        <h1 style="color:#258cd1;"> <input type="text" ng-model="userInput.obrazok7"  class="text-center" style="border-width: 0px ;width:99%"></h1>
+    </div>
+    <div class="col-sm-2 col-lg-2 col-xs-2">
+        <img data-ng-src="data:image/png;base64,{{data4}}"  width="100%"/>
+        <br>
+        <h1 style="color:#258cd1;">  <input type="text" ng-model="userInput.obrazok8" class="text-center" style="border-width: 0px ;width:99%"></h1>
+    </div>
+</div>
+    <br>
+    <button type="submit"   class="btn btn-lg btn-block btn-primary">Vytvoriť test
+    </button>
+</div>
+<!--<p ng-bind="slovo"> slova </p>-->
+<!--<p ng-bind="idimg">IDecka</p>-->
+
+<!--<img data-ng-src="{{getImage(locadoc.image)}}" />-->
 

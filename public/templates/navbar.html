@@ -1,18 +1,31 @@
 <div ng-controller="NavbarCtrl" class="navbar navbar-default navbar-static-top"
      role="navigation" bs-navbar>
-    <div class="navbar-header">
-        <a class="navbar-brand" href="/">
+    <div class="navbar-header" >
+
+        <a ng-if="currentUser.role===1" class="navbar-brand" href="/adminmenu">
+            <span class="glyphicon glyphicon-education"></span>
+            Symbol-<strong>Text</strong> Education</a>
+        <a ng-if="!currentUser" class="navbar-brand" href="/">
             <span class="glyphicon glyphicon-education"></span>
             Symbol-<strong>Text</strong> Education</a>
     </div>
-    <ul class="nav navbar-nav">
-        <li data-match-route="/"><a href="/">Hlavná stránka</a></li>
-        <li data-match-route="/addtodb"><a href="/addtodb">Upload image</a></li>
-        <li data-match-route="/freeWrite"><a href="/freeWrite">Voľné písanie</a> </li>
-        <li data-match-route="/imageupload"><a href="/imageupload">Vytvorenie slova</a> </li>
-        <li data-match-route="/metadata"><a href="/metadata">metadata</a> </li>
-        <li data-match-route="/searchtest"><a href="/searchtest">search</a> </li>
+    <!--<ul class="nav navbar-nav">-->
+        <!--<li data-match-route="/"><a href="/">Hlavná stránka</a></li>-->
+        <!--&lt;!&ndash;<li data-match-route="/addtodb"><a href="/addtodb">Upload image</a></li>&ndash;&gt;-->
+        <!--<li data-match-route="/freeWrite"><a href="/freeWrite">Voľné písanie</a> </li>-->
+        <!--&lt;!&ndash;<li data-match-route="/imageupload"><a href="/imageupload">Vytvorenie slova</a> </li>&ndash;&gt;-->
+        <!--&lt;!&ndash;<li data-match-route="/metadata"><a href="/metadata">metadata</a> </li>&ndash;&gt;-->
+        <!--<li data-match-route="/searchtest"><a href="/searchtest">Testovanie</a> </li>-->
+    <!--</ul>-->
+    <ul class="nav navbar-nav" ng-if="currentUser.role===0">
+        <!--<li data-match-route="/"><a href="/">Hlavná stránka</a></li>-->
+        <li data-match-route="/imageupload"><a href="/imageupload">Upload symbolov</a> </li>
+        <li data-match-route="/addtodb"><a href="/addtodb">Vloženie slov</a></li>
+        <li data-match-route="/freeWrite"><a href="/freeWrite">Vytvorenie testu</a> </li>
+        <li data-match-route="/metadata"><a href="/metadata">Prehľad testov</a> </li>
+        <li data-match-route="/searchtest"><a href="/searchtest">Výsledky testov</a> </li>
     </ul>
+
 
     <!--TOTO SA ZOBRAZUJE IBA PRIHLASENEMU ADMINISTRATOROVI V NAV-PANELY-->
     <ul class="nav navbar-nav" ng-if="currentUser.role===1">

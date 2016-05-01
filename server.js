@@ -121,7 +121,7 @@ app.post('/api/words', function (req, res) {
     console.log('daco tu pisem');
     console.log(req.body.word);
     console.log(req.body.singleSelect);
-    if(idImg ===null){
+    if (idImg === null) {
         console.log('ziadne ID obrazku ku slovu nebolo priradene ');
     }
     var word = new Word({
@@ -131,7 +131,7 @@ app.post('/api/words', function (req, res) {
         imageID: idImg
     });
     word.save(function (err, word) {
-        idImg=null;
+        idImg = null;
         if (err) {
             res.send(err);
         }
@@ -177,10 +177,10 @@ app.post('/api/imgUp', function (req, res) {
                     });
                     file.pipe(ws);
                     req.pipe(busboy);
-                }else{
+                } else {
                     console.log('zhoda v nazve suboru')
                     console.log(files._id);
-                    idImg= files._id;
+                    idImg = files._id;
                     //res.sendStatus(200);
                     res.writeHead(303, {
                         Connection: 'close',
@@ -310,9 +310,9 @@ app.get('/nieco:id', function (req, res) {
     }
 });
 //vracia list vsetkych pouzivatelov
-app.post('/api/getusers', function(req,res){
-    User.find( function (err, user) {
-        if(err) return res.send(err)
+app.post('/api/getusers', function (req, res) {
+    User.find(function (err, user) {
+        if (err) return res.send(err)
 
         console.log(user);
         return res.status(200).send(user);
@@ -320,9 +320,9 @@ app.post('/api/getusers', function(req,res){
     })
 });
 //vrati list slov
-app.post('/api/getwords',function(req,res){
-    Word.find( function (err, word) {
-        if(err) return res.send(err)
+app.post('/api/getwords', function (req, res) {
+    Word.find(function (err, word) {
+        if (err) return res.send(err)
 
         console.log(word);
         return res.status(200).send(word);
@@ -349,7 +349,6 @@ app.post('/api/login', passport.authenticate('local'), function (req, res) {
     res.cookie('user', JSON.stringify(req.user));
     res.send(req.user);
 });
-
 
 
 app.post('/api/signup', function (req, res, next) {
@@ -393,13 +392,13 @@ app.post('/api/searchExample', function (req, res) {
     var query = req.body.text;
     console.log(query);
     Word.findOne({word: query}, 'word wordType filename imageID', function (err, word) {
-    //  Word.find({'word': new RegExp(query, 'i')},'filename imageID word wordType', function(err,word){
+        //  Word.find({'word': new RegExp(query, 'i')},'filename imageID word wordType', function(err,word){
         if (err) {
             return res.status(400).send({msg: " error during search DB"});
             //if (!doc) return next(new Error('cant find'));
         }
         console.log(word);
-        result=word;
+        result = word;
         if (result === null) {
             return res.status(200).send(null);
         } else {
@@ -411,8 +410,8 @@ app.post('/api/searchExample', function (req, res) {
 
 });
 
-app.post('/api/wordsadd',function(req,res){
-    var word= req.body.mainWord;
+app.post('/api/wordsadd', function (req, res) {
+    var word = req.body.mainWord;
     var newWord = req.body.word;
     var imageID;
     var wordType;
@@ -429,8 +428,8 @@ app.post('/api/wordsadd',function(req,res){
             console.log('nenachadza sa v DB');
             res.status(400).send({msg: "nic sa nenachadza v DB treba nove slovo"})
         } else {
-            imageID=word.imageID;
-            wordType=word.wordType;
+            imageID = word.imageID;
+            wordType = word.wordType;
             //console.log(word.imageID);
             var wordDB = new Word({
                 word: newWord,
@@ -439,7 +438,7 @@ app.post('/api/wordsadd',function(req,res){
                 imageID: imageID
             });
             wordDB.save(function (err, word) {
-                idImg=null;
+                idImg = null;
                 if (err) {
                     res.send(err);
                 }
@@ -452,7 +451,7 @@ app.post('/api/wordsadd',function(req,res){
 
     })
 });
-app.post('/imgskuska', function(req, res){
+app.post('/imgskuska', function (req, res) {
     //var files = gfs.files.find({}).toArray(function (err, files) {
     //    //console.log('nazov ' + files[0].filename);
     //   // console.log(files);
@@ -466,53 +465,82 @@ app.post('/imgskuska', function(req, res){
     //    }
     //}
     //});
-var imgid;
+    var imgid;
     var fajlnejm
     var result;
-    var query = req.body.obrazok;
-    console.log(query);
-    Word.findOne({word: query}, 'word wordType filename imageID', function (err, word) {
-        //  Word.find({'word': new RegExp(query, 'i')},'filename imageID word wordType', function(err,word){
+    console.log(req.body.query)
+    var query = req.body.query;
+
+    Word.find({'word': new RegExp(query, 'i')}, 'filename imageID word wordType', function (err, word) {
         if (err) {
             return res.status(400).send({msg: " error during search DB"});
             //if (!doc) return next(new Error('cant find'));
         }
         //console.log(word.imageID);
-        result=word;
-            if (result === null) {
-                return res.status(200).send(null);
-            } else {
-        //        return res.status(200).send(result);
-        //        //        res.send('odoslane');
-                console.log(result.imageID)
-                imgid = result.imageID
+        result = word;
+        console.log(result)
+        if (result.length===0) {
+           console.log('som dnu')
+            //return res.status(200).send(null);
 
-                gfs.findOne({_id: imgid}, function (err, files) {
-                    if (err) return next(err);
-                    console.log(files.filename)
-                    fajlnejm=files.filename
-
-                var rstream = gfs.createReadStream(fajlnejm);
-                var bufs = [];
-                rstream.on('data', function(chunk) {
-                    bufs.push(chunk);
-                }).on('end', function() {
+            var rstream = gfs.createReadStream('error.png');
+            var bufs = [];
+            rstream.on('data', function (chunk) {
+                bufs.push(chunk);
+            }).on('end', function () {
 // done
-                    var fbuf = Buffer.concat(bufs);
-                    var base64 = (fbuf.toString('base64'));
-                    //res.send('<img src="data:image/jpeg;base64,' + base64 + '">');
-                    //console.log(base64)
-                    res.send(base64);
-                });
-                })
-            }
-        //console.log(result)
+                var fbuf = Buffer.concat(bufs);
+                var base64 = (fbuf.toString('base64'));
+                //res.send('<img src="data:image/jpeg;base64,' + base64 + '">');
+                //console.log(base64)
+                res.send(base64);
+            });
+        } else {
 
 
 
-    })
+            //console.log(query);
+            Word.findOne({word: query}, 'word wordType filename imageID', function (err, word) {
+
+                if (err) {
+                    return res.status(400).send({msg: " error during search DB"});
+                    //if (!doc) return next(new Error('cant find'));
+                }
+                //console.log(word.imageID);
+                result = word;
+                if (result === null) {
+                    return res.status(200).send(null);
+                } else {
+                    //        return res.status(200).send(result);
+                    //        //        res.send('odoslane');
+                    console.log(result.imageID)
+                    imgid = result.imageID
+
+                    gfs.findOne({_id: imgid}, function (err, files) {
+                        if (err) return next(err);
+                        console.log(files.filename)
+                        fajlnejm = files.filename
+
+                        var rstream = gfs.createReadStream(fajlnejm);
+                        var bufs = [];
+                        rstream.on('data', function (chunk) {
+                            bufs.push(chunk);
+                        }).on('end', function () {
+// done
+                            var fbuf = Buffer.concat(bufs);
+                            var base64 = (fbuf.toString('base64'));
+                            //res.send('<img src="data:image/jpeg;base64,' + base64 + '">');
+                            //console.log(base64)
+                            res.send(base64);
+                        });
+                    })
+                }
+                //console.log(result)
 
 
+            })
+
+        }
 
 
 //    var rstream = gfs.createReadStream('car.png');
@@ -527,8 +555,8 @@ var imgid;
 //        //console.log(base64)
 //        res.send(base64);
 //    });
+    })
 })
-
 app.get('/api/logout', function (req, res, next) {
     req.logout();
     res.send(200);

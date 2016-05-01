@@ -57,6 +57,13 @@ angular.module('SymText', ['ngCookies', 'ngResource', 'ngMessages', 'ngRoute','m
                 templateUrl: 'templates/addWords.html',
                 controller: 'AddWordsCtrl'
             })
+            .when('/createtest',{
+                templateUrl: 'templates/createTest.html'
+            })
+            .when('/ex',{
+                templateUrl: 'templates/example.html',
+                controller: 'ExCtrl'
+            })
             .otherwise({
                 redirectTo: '/'
             });
