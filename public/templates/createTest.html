@@ -1,0 +1,46 @@
+<div class="container">
+
+    <div class="row">
+        <div class="center-form panel">
+            <div class="panel-body">
+                <h2 class="text-center">Vytvorenie testu</h2>
+
+                <form novalidate method="post" ng-submit="create()" name="createTestForm">
+
+                    <div class="form-group">
+                        <input class="form-control input-lg" type="text" name="nazov"
+                               ng-model="test.name" placeholder="Názov testu" required autofocus>
+                    </div>
+
+                    <div class="form-group">
+                        <input class="form-control input-lg" type="text" name="heslo"
+                               ng-model="test.heslo" placeholder="Heslo pre prístup" required autofocus>
+                    </div>
+                    <div class="form-group">
+                        <label class="input-lg" for="singleSelect"> Obtiažnosť: </label><br>
+                        <select class="form-control input-lg" name="singleSelect" ng-model="test.singleSelect" required>
+                            <option value="easy">ľahká</option>
+                            <option value="medium">stredne ťažká</option>
+                            <option value="hard">ťažká</option>
+                            <option value="expert">expert</option>
+                        </select><br>
+                    </div>
+                    <div class="form-group">
+
+                        <div class="checkbox">
+                            <label class="input-lg"><input type="checkbox" ng-model="test.visible" value="1">Viditeľnosť</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input class="form-control input-lg" type="text" name="time"
+                               ng-model="test.time" placeholder="Časový limit">
+                    </div>
+
+                    <button type="submit" ng-disabled="createTestForm.nazov.$invalid || createTestForm.heslo.$invalid"
+                            class="btn btn-lg btn-block btn-success">Vytvoriť
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

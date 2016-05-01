@@ -1,0 +1,67 @@
+<div class="container">
+    <div class="row">
+        <div class="center-formEx panel">
+            <div class="panel-body">
+                <h2 class="text-center">Zoznam používateľov</h2>
+                <!--<div ng-cloak ng-show="showList != 0">-->
+                <!--<div ng-repeat="user in users">-->
+
+                <!--<p><a href="/signup" class="list-group-item" class="text-center">{{ user.fullname}}</a></p>-->
+
+                <!--</div>-->
+                <!--</div>-->
+
+                    <div class="row" ng-repeat="user in users" ng-class-odd="'alt'">
+                        <!--<div class="list-group-item">{{user.username}}</div>-->
+                        <!--<div class="list-group-item">{{user.fullname}}</div>-->
+                        <!--&lt;!&ndash;<div class="col-xs-5">{{row.desc}}</div>&ndash;&gt;-->
+                        <!--<div class="col-xs-3 text-right"><a href="" class="btn btn-primary btn-sm"><span>Edit</span></a>-->
+                        <!--</div>-->
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                <tr>
+
+                                    <th class="center-form">Username</th>
+                                    <th class="center-form">Celé meno</th>
+                                    <th class="center-form">Rola používateľa</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+
+                                    <td class="center-form">{{user.username}}</td>
+                                    <td class="center-form">{{user.fullname}}</td>
+                                    <td class="center-form" ng-if="user.role ==1">Administrator</td><td class="center-form" ng-if="!user.role ==1">Učiteľ</td>
+                                    <td><div class="col-xs-3 text-right"><a href="" class="btn btn-primary btn-sm"><span>Edit</span></a></div></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--<div class="table-responsive">-->
+    <!--<table class="table">-->
+        <!--<thead>-->
+        <!--<tr>-->
+
+            <!--<th>Username</th>-->
+            <!--<th>Cele meno</th>-->
+            <!--</tr>-->
+        <!--</thead>-->
+        <!--<tbody>-->
+        <!--<tr>-->
+
+            <!--<td>{{user.username}}</td>-->
+            <!--<td>{{user.fullname}}</td>-->
+
+        <!--</tr>-->
+        <!--</tbody>-->
+    <!--</table>-->
+<!--</div>-->

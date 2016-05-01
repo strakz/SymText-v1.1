@@ -1,0 +1,46 @@
+<div class="container">
+    <div class="row">
+        <div class="center-formEx panel">
+            <div class="panel-body">
+                <h2 class="text-center">Zoznam slov</h2>
+                <!--<div ng-cloak ng-show="showList != 0">-->
+                <!--<div ng-repeat="user in users">-->
+
+                <!--<p><a href="/signup" class="list-group-item" class="text-center">{{ user.fullname}}</a></p>-->
+
+                <!--</div>-->
+                <!--</div>-->
+
+                <div class="row" ng-repeat="word in words" ng-class-odd="'alt'">
+                    <!--<div class="list-group-item">{{user.username}}</div>-->
+                    <!--<div class="list-group-item">{{user.fullname}}</div>-->
+                    <!--&lt;!&ndash;<div class="col-xs-5">{{row.desc}}</div>&ndash;&gt;-->
+                    <!--<div class="col-xs-3 text-right"><a href="" class="btn btn-primary btn-sm"><span>Edit</span></a>-->
+                    <!--</div>-->
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                            <tr>
+
+                                <th class="center-form">Slovo</th>
+                                <th class="center-form">Slovny druh</th>
+                                <th class="center-form">ID-obrazku</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+
+                                <td class="center-form">{{word.word}}</td>
+                                <td class="center-form">{{word.wordType}}</td>
+                                <td class="center-form">{{word.imageID}}</td>
+                                <td><div class="col-xs-3 text-right"><a href="" class="btn btn-primary btn-sm"><span>Upraviť</span></a></div></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
