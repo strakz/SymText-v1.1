@@ -6,9 +6,9 @@ angular.module('SymText', ['ngCookies', 'ngResource', 'ngMessages', 'ngRoute','m
                 templateUrl: 'templates/home.html',
                 //controller: 'MainCtrl'
             })
-            .when('/freeWrite', {
-                templateUrl: 'templates/freeWrite.html',
-                controller: 'FreeWrtCtrl'
+            .when('/vyhladavanieTest', {
+                templateUrl: 'templates/vyhladavanieTest.html',
+                controller: 'VyhladavanieTestCtrl'
             })
             .when('/login', {
                 templateUrl: 'templates/login.html',
@@ -58,11 +58,24 @@ angular.module('SymText', ['ngCookies', 'ngResource', 'ngMessages', 'ngRoute','m
                 controller: 'AddWordsCtrl'
             })
             .when('/createtest',{
-                templateUrl: 'templates/createTest.html'
+                templateUrl: 'templates/createTest.html',
+                controller: 'TestInfoCtrl'
             })
-            .when('/ex',{
-                templateUrl: 'templates/example.html',
-                controller: 'ExCtrl'
+            .when('/freeWrite',{
+                templateUrl: 'templates/freeWrite.html',
+                controller: 'FreeWriteCtrl'
+            })
+            .when('/createtesttemplate',{
+                templateUrl: 'templates/createTestWords.html',
+                controller: 'CreateTestCtrl'
+            })
+            .when('/testMenu',{
+                templateUrl: 'templates/testMenu.html',
+                controller: 'TestMenuCtrl'
+            })
+            .when('/testView',{
+                templateUrl: 'templates/testView.html',
+                controller: 'TestViewCtrl'
             })
             .otherwise({
                 redirectTo: '/'
