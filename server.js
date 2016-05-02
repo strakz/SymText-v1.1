@@ -21,6 +21,16 @@ var Busboy = require('busboy');
 
 var app = express();
 
+var testSchema = new mongoose.Schema({
+    testText: String,
+    testName: String,
+    author: String,
+    password: String,
+    testTime: Number,
+    isVissible: {type:Boolean, default: 'false'},
+    difficult: String
+
+})
 
 var wordSchema = new mongoose.Schema({
     word: {type: String, unique: true},
@@ -65,12 +75,14 @@ var imageSchema = new mongoose.Schema({});
 
 var Word = mongoose.model('Word', wordSchema);
 var User = mongoose.model('User', userSchema);
+var Test = mongoose.model('Test', testSchema);
 var ImageDB = mongoose.model('imgDB', imageSchema);
 mongoose.connect('mongodb://localhost/symtext');
 var conn = mongoose.connection;
 Grid.mongo = mongoose.mongo;
 var gfs = new Grid(conn.db);
 var idImg;
+var testId;
 
 passport.serializeUser(function (user, done) {
     done(null, user.id);
@@ -479,8 +491,8 @@ app.post('/imgskuska', function (req, res) {
         //console.log(word.imageID);
         result = word;
         console.log(result)
-        if (result.length===0) {
-           console.log('som dnu')
+        if (result.length === 0) {
+            console.log('som dnu')
             //return res.status(200).send(null);
 
             var rstream = gfs.createReadStream('error.png');
@@ -557,6 +569,65 @@ app.post('/imgskuska', function (req, res) {
 //    });
     })
 })
+//vytvorenie testu na zaklade pisania slov
+app.post('/createtestText', function (req, res) {
+    console.log(req.body.query);
+    var testDB = new Test({
+        testText: req.body.query
+    })
+    testDB.save(function (err, test) {
+        if (err) {
+            res.send(err);
+        }
+        console.log(test._id)
+        testId=test._id
+    })
+    res.status(200).send(null);
+})
+
+//doplnenie informacii k testu /meno heslo atd
+app.post('/testDone',function(req,res){
+    var visible=req.body.visible;
+    console.log(req.body);
+    console.log(testId);
+    console.log(req.body.time)
+    console.log(req.body.visible)
+if(req.body.visible===undefined){
+    visible='false';
+}
+
+    Test.findById(testId, function(err, test){
+        if(err){
+          res.send(err)
+        }
+        test.difficult = req.body.singleSelect
+        test.testName= req.body.name
+        test.testTime= req.body.time
+        test.password= req.body.heslo
+        test.isVissible= visible;
+        test.save(function(err){
+            if (err){
+                res.send(err)
+            }
+            res.status(200).send(null);
+        })
+    })
+    //res.status(200).send(null);
+})
+app.post('/getTestText',function(req,res){
+    var text;
+    console.log(req.body);
+    Test.findById(req.body.query,function(err,test){
+        if(err){
+            res.send(err)
+        }
+       text= test.testText;
+        console.log(text);
+        res.json(test);
+    })
+
+})
+
 app.get('/api/logout', function (req, res, next) {
     req.logout();
     res.send(200);

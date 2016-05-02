@@ -1,7 +1,7 @@
 <div class="container">
 
     <div class="row">
-        <div class="center-form panel">
+        <div class="center-formEx panel">
             <div class="panel-body">
                 <h2 class="text-center">Vytvorenie testu</h2>
 
@@ -32,11 +32,11 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <input class="form-control input-lg" type="text" name="time"
+                        <input class="form-control input-lg" type="number" name="time"
                                ng-model="test.time" placeholder="Časový limit">
                     </div>
 
-                    <button type="submit" ng-disabled="createTestForm.nazov.$invalid || createTestForm.heslo.$invalid"
+                    <button type="submit" ng-disabled="createTestForm.nazov.$invalid || createTestForm.heslo.$invalid || createTestForm.singleSelect.$invalid"
                             class="btn btn-lg btn-block btn-success">Vytvoriť
                     </button>
                 </form>

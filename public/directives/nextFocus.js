@@ -9,7 +9,7 @@ angular.module('SymText')
  the next field id e.g field2
  The last field should not have next-focus directive to avoid
  focusing on non-existing element.
- Works for Web, iOS (Go button) & Android (Next button) browsers,
+
  **/
 
 function nextFocus() {
