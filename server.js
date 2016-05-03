@@ -21,13 +21,21 @@ var Busboy = require('busboy');
 
 var app = express();
 
+var resultSchema = new mongoose.Schema({
+    testText: String,
+    Author: String,
+    test_time: Number,
+    testName: String,
+    testId: String
+})
+
 var testSchema = new mongoose.Schema({
     testText: String,
     testName: String,
     author: String,
     password: String,
     testTime: Number,
-    isVissible: {type:Boolean, default: 'false'},
+    isVissible: {type: Boolean, default: 'false'},
     difficult: String
 
 })
@@ -76,6 +84,7 @@ var imageSchema = new mongoose.Schema({});
 var Word = mongoose.model('Word', wordSchema);
 var User = mongoose.model('User', userSchema);
 var Test = mongoose.model('Test', testSchema);
+var Result = mongoose.model('Result', resultSchema);
 var ImageDB = mongoose.model('imgDB', imageSchema);
 mongoose.connect('mongodb://localhost/symtext');
 var conn = mongoose.connection;
@@ -580,33 +589,33 @@ app.post('/createtestText', function (req, res) {
             res.send(err);
         }
         console.log(test._id)
-        testId=test._id
+        testId = test._id
     })
     res.status(200).send(null);
 })
 
 //doplnenie informacii k testu /meno heslo atd
-app.post('/testDone',function(req,res){
-    var visible=req.body.visible;
+app.post('/testDone', function (req, res) {
+    var visible = req.body.visible;
     console.log(req.body);
     console.log(testId);
     console.log(req.body.time)
     console.log(req.body.visible)
-if(req.body.visible===undefined){
-    visible='false';
-}
+    if (req.body.visible === undefined) {
+        visible = 'false';
+    }
 
-    Test.findById(testId, function(err, test){
-        if(err){
-          res.send(err)
+    Test.findById(testId, function (err, test) {
+        if (err) {
+            res.send(err)
         }
         test.difficult = req.body.singleSelect
-        test.testName= req.body.name
-        test.testTime= req.body.time
-        test.password= req.body.heslo
-        test.isVissible= visible;
-        test.save(function(err){
-            if (err){
+        test.testName = req.body.name
+        test.testTime = req.body.time
+        test.password = req.body.heslo
+        test.isVissible = visible;
+        test.save(function (err) {
+            if (err) {
                 res.send(err)
             }
             res.status(200).send(null);
@@ -614,17 +623,32 @@ if(req.body.visible===undefined){
     })
     //res.status(200).send(null);
 })
-app.post('/getTestText',function(req,res){
+app.post('/getTestText', function (req, res) {
     var text;
     console.log(req.body);
-    Test.findById(req.body.query,function(err,test){
-        if(err){
+    Test.findById(req.body.query, function (err, test) {
+        if (err) {
             res.send(err)
         }
-       text= test.testText;
+        text = test.testText;
         console.log(text);
         res.json(test);
     })
+
+})
+
+app.post('/saveStudentTest', function (req, res) {
+    console.log(req.body.query)
+    var result = new Result({
+        testText: req.body.query
+    })
+    result.save(function (err, test) {
+            if (err) {
+                res.send(err);
+            }
+            res.status(200).send(null);
+        }
+    )
 
 })
 

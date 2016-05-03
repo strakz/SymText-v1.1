@@ -6,6 +6,7 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
+    "angular-animate": "^1.5.5",
     "async": "^2.0.0-rc.3",
     "bc": "^0.1.1",
     "bcryptjs": "^2.3.0",
