@@ -743,6 +743,14 @@ app.post('/createtestText', function (req, res) {
     res.status(200).send(null);
 })
 
+app.get('/api/alltests',function(req,res){
+    Test.find(function (err, tests){
+        if(err) res.send(err)
+
+        res.json(tests)
+    })
+})
+
 //doplnenie informacii k testu /meno heslo atd
 app.post('/testDone', function (req, res) {
     var visible = req.body.visible;
