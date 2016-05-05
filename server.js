@@ -96,6 +96,7 @@ var Test = mongoose.model('Test', testSchema);
 var Result = mongoose.model('Result', resultSchema);
 
 //mongoose.connect('mongodb://localhost/symtext');
+
 mongoose.connect('mongodb://strakz:heslojeheslo@ds011482.mlab.com:11482/sym_text');
 var conn = mongoose.connection;
 Grid.mongo = mongoose.mongo;
