@@ -1,0 +1,42 @@
+<div class="container">
+    <div class="row">
+        <div class=" panel">
+            <div class="panel-body">
+                <h2 class="text-center">Zoznam testov</h2>
+
+                <div class="row" ng-repeat="test in tests" ng-class-odd="'alt'">
+
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                            <tr>
+
+                                <th class="center-form">Názov testu</th>
+                                <th class="center-form">Obtiažnosť</th>
+                                <th class="center-form">Autor testu</th>
+                                <th class="center-form">Čas test</th>
+                                <th class="center-form">Text testu</th>
+                                <th class="center-form">Povolená viditeľnosť</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+
+                                <td class="center-form">{{test.testName}}</td>
+                                <td class="center-form">{{test.difficult}}</td>
+                                <td class="center-form">{{test.author}}</td>
+                                <td class="center-form">{{test.testTime}}</td>
+                                <td class="center-form">{{test.testText}}</td>
+                                <td class="center-form" ng-if="test.isVissible ===true">Áno</td><td class="center-form" ng-if="!test.isVissible ===true">Nie</td>
+                                <td><div class="col-xs-3 text-right"><button ng-click="edit(this)" class="btn btn-primary btn-sm"><span>Upraviť</span></button></div></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+            <a href="/ucitelmenu" class="btn btn-lg btn-block btn-danger">Späť do menu</a>
+        </div>
+    </div>
+</div>
