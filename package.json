@@ -1,9 +1,11 @@
 {
   "name": "SymText",
-  "version": "0.0.0",
-  "private": true,
+  "version": "0.0.1",
+  "engines": {
+  "node": "4.2.2"
+},
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node server"
   },
   "dependencies": {
     "angular-animate": "^1.5.5",
