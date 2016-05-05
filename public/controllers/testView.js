@@ -1,7 +1,13 @@
 angular.module('SymText')
-    .controller('TestViewCtrl', ['$scope', '$http', function ($scope, $http) {
-        var testId = '5726aa164a26bbe4180700ea';
+    .controller('TestViewCtrl', ['$scope', '$http', '$routeParams', 'Test','$rootScope','$location', function ($scope, $http, $routeParams, Test, $rootScope, $location) {
+
+        console.log($routeParams.id)
+        var testName;
+        var student = $rootScope.currentUser.fullname
+        var testId = $routeParams.id;
         var testText;
+        var origText;
+        var mistake=0;
         console.log($scope.currentUser)
         $scope.getTests = function () {
             console.log('hned sa vykonala');
@@ -11,11 +17,11 @@ angular.module('SymText')
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'},
                 data: 'query=' + testId
             }).success(function (response) {
-                console.log(response.testText)
+                console.log(response.testText);
+                testName=response.testName;
                 testText = response.testText.split(', ');
+                origText=response.testText.split(', ');
                 for (var i = 0; i < (testText.length - 1); i++) {
-                    var step = i;
-                    console.log(i)
                     console.log(testText[i])
                     showImages(i, testText);
 
@@ -35,14 +41,25 @@ angular.module('SymText')
                 } else {
                     testText += $scope.texts[i] + ', ';
                 }
+
+                if(origText[i]===$scope.texts[i]){
+                    console.log('ano')
+
+                }else{
+                    console.log('ne')
+                    mistake++;
+                    console.log('chyba  ' +mistake)
+
+                }
             }
+
             $http({
                 url: '/saveStudentTest',
                 method: 'POST',
-                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-                data: 'query=' + testText
+                headers: {'Content-Type': 'application/json'},
+                data: {'query':testText, 'testId': testId, 'student':student, 'testName': testName}
             }).success(function (response) {
-
+                $location.path('/menuziak')
 
             })
 

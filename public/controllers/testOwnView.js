@@ -1,6 +1,6 @@
 angular.module('SymText')
-    .controller('TestOwnViewCtrl', ['$scope', '$http', function ($scope, $http) {
-        var testId = '5726aa164a26bbe4180700ea';
+    .controller('TestOwnViewCtrl', ['$scope', '$http','$location','Test','$routeParams', function ($scope, $http, $location, Test, $routeParams) {
+        var testId = $routeParams.id;
         var testText;
         console.log($scope.currentUser)
         $scope.getTests = function () {
@@ -33,9 +33,9 @@ angular.module('SymText')
             for (var i = 0; i < (testText.length - 1); i++) {
 
                 if ($scope.texts[i] === testText[i]) {
-                    console.log('ROVNA SA')
+                    markResult(i, '#00cc00', '#99ff99');
                 } else {
-                    markResult(i);
+                    markResult(i, '#cd2a19', '#ffb3b3');
                 }
             }
         }
@@ -67,55 +67,55 @@ angular.module('SymText')
         //}
 
 
-        function markResult(i) {
+        function markResult(i,textColor, backgroundColor) {
             switch (i) {
                 case 0:
-                    $scope.style1={'border-color':'#cd2a19', 'border-width':'2px', 'background-color': '#ffb3b3'}
-                    $scope.txtStyle1 = {'color': '#cd2a19'}
+                    $scope.style1={'border-color':textColor, 'border-width':'2px', 'background-color': backgroundColor}
+                    $scope.txtStyle1 = {'color': textColor}
                     break;
                 case 1:
-                    $scope.style2={'border-color':'#cd2a19', 'border-width':'2px', 'background-color': '#ffb3b3'}
-                    $scope.txtStyle2 = {'color': '#cd2a19'}
+                    $scope.style2={'border-color':textColor, 'border-width':'2px', 'background-color': backgroundColor}
+                    $scope.txtStyle2 = {'color': textColor}
                     break;
                 case 2:
-                    $scope.style3={'border-color':'#cd2a19', 'border-width':'2px', 'background-color': '#ffb3b3'}
-                    $scope.txtStyle3 = {'color': '#cd2a19'}
+                    $scope.style3={'border-color':textColor, 'border-width':'2px', 'background-color': backgroundColor}
+                    $scope.txtStyle3 = {'color': textColor}
                     break;
                 case 3:
-                    $scope.style4={'border-color':'#cd2a19', 'border-width':'2px', 'background-color': '#ffb3b3'}
-                    $scope.txtStyle4 = {'color': '#cd2a19'}
+                    $scope.style4={'border-color':textColor, 'border-width':'2px', 'background-color':backgroundColor}
+                    $scope.txtStyle4 = {'color': textColor}
                     break;
                 case 4:
-                    $scope.style5={'border-color':'#cd2a19', 'border-width':'2px', 'background-color': '#ffb3b3'}
-                    $scope.txtStyle5 = {'color': '#cd2a19'}
+                    $scope.style5={'border-color':textColor, 'border-width':'2px', 'background-color': backgroundColor}
+                    $scope.txtStyle5 = {'color': textColor}
                     break;
                 case 5:
-                    $scope.style6={'border-color':'#cd2a19', 'border-width':'2px', 'background-color': '#ffb3b3'}
-                    $scope.txtStyle6 = {'color': '#cd2a19'}
+                    $scope.style6={'border-color':textColor, 'border-width':'2px', 'background-color': backgroundColor}
+                    $scope.txtStyle6 = {'color': textColor}
                     break;
                 case 6:
-                    $scope.style7={'border-color':'#cd2a19', 'border-width':'2px', 'background-color': '#ffb3b3'}
-                    $scope.txtStyle7 = {'color': '#cd2a19'}
+                    $scope.style7={'border-color':textColor, 'border-width':'2px', 'background-color': backgroundColor}
+                    $scope.txtStyle7 = {'color': textColor}
                     break;
                 case 7:
-                    $scope.style8={'border-color':'#cd2a19', 'border-width':'2px', 'background-color': '#ffb3b3'}
-                    $scope.txtStyle8 = {'color': '#cd2a19'}
+                    $scope.style8={'border-color':textColor, 'border-width':'2px', 'background-color': backgroundColor}
+                    $scope.txtStyle8 = {'color': textColor}
                     break;
                 case 8:
-                    $scope.style9={'border-color':'#cd2a19', 'border-width':'2px', 'background-color': '#ffb3b3'}
-                    $scope.txtStyle9 = {'color': '#cd2a19'}
+                    $scope.style9={'border-color':textColor, 'border-width':'2px', 'background-color': backgroundColor}
+                    $scope.txtStyle9 = {'color': textColor}
                     break;
                 case 9:
-                    $scope.style10={'border-color':'#cd2a19', 'border-width':'2px', 'background-color': '#ffb3b3'}
-                    $scope.txtStyle10 = {'color': '#cd2a19'}
+                    $scope.style10={'border-color':textColor, 'border-width':'2px', 'background-color': backgroundColor}
+                    $scope.txtStyle10 = {'color': textColor}
                     break;
                 case 10:
-                    $scope.style11={'border-color':'#cd2a19', 'border-width':'2px', 'background-color': '#ffb3b3'}
-                    $scope.txtStyle11 = {'color': '#cd2a19'}
+                    $scope.style11={'border-color':textColor, 'border-width':'2px', 'background-color': backgroundColor}
+                    $scope.txtStyle11 = {'color': textColor}
                     break;
                 case 11:
-                    $scope.style12={'border-color':'#cd2a19', 'border-width':'2px', 'background-color': '#ffb3b3'}
-                    $scope.txtStyle12 = {'color': '#cd2a19'}
+                    $scope.style12={'border-color':textColor, 'border-width':'2px', 'background-color': backgroundColor}
+                    $scope.txtStyle12 = {'color': textColor}
                     break;
 
             }

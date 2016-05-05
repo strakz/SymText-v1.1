@@ -1,0 +1,23 @@
+<div class="container" ng-init="load()">
+    <h1 class="text-center" style="color:#d09700">Symbol-<span strong>Text</span> Education
+        <small>Textovo-obrázkové cvičenia</small>
+    </h1>
+    <div class="row">
+        <br>
+        <div class="panel">
+            <div class="panel-body">
+
+                <h2 class="text-center" style="color:rebeccapurple"><span class="glyphicon glyphicon-search"></span> Nájdi svoju fotku a prihlás sa.  </h2>
+                <br>
+                <div ng-repeat="data in datas track by $index">
+                    <div class="col-lg-2 col-sm-3 col-xs-4">
+
+                        <img data-ng-src="data:image/png;base64,{{data}}" class="thumbnail img-responsive"
+                             ng-click="loginSt(student[$index])">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

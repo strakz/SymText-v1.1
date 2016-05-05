@@ -1,0 +1,40 @@
+<div class="container">
+    <div class="row">
+        <div class="panel">
+            <div class="panel-body">
+                <h2 class="text-center">Výsledky Testov</h2>
+
+                <div class="row" ng-repeat="reslt in reslts" ng-class-odd="'alt'">
+
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                            <tr>
+
+                                <th class="center-form">Názov testu</th>
+                                <th class="center-form">Meno žiaka</th>
+                                <th class="center-form">Text testu</th>
+                                <th class="center-form">Počet chýb</th>
+                                <th class="center-form">Čas strávený v teste</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+
+                                <td class="center-form">{{reslt.testName}}</td>
+                                <td class="center-form">{{reslt.Author}}</td>
+                                <td class="center-form">{{reslt.testText}}</td>
+                                <td class="center-form">{{reslt.mistakes}}</td>
+                                <td class="center-form">{{reslt.testTime}}</td>
+
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+

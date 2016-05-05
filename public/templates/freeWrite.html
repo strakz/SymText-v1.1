@@ -1,9 +1,9 @@
 <div class="container">
     <h1 class="text-center" style="color:#d62c1a">
     <br>VOĽNÉ PÍSANIE </h1>
-    <div class="row">
+    <div class="row" >
         <div class="col-sm-2 col-lg-2 col-xs-2">
-            <img data-ng-src="data:image/png;base64,{{data}}"  width="100%"/>
+            <img data-ng-src="data:image/png;base64,{{data}}"  width="100%"  />
             <br>
             <h1 ng-style="txtStyle1"><input id="text1" next-focus="id=text2" autofocus type="text" ng-change="search($event,text1)" ng-model="text1"  class="text-center" style="border-width: 0px ;width:100%" > </h1>
         </div>
@@ -68,6 +68,7 @@
         </div>
     </div>
     <br>
-    <a href="/menuziak"> <button type="submit"   class="btn btn-lg btn-block btn-primary"> Ukončiť voľné písanie
-    </button></a>
+     <!--<button type="submit"  ng-click="clean()" class="btn btn-lg btn-block btn-primary"> Ukončiť voľné písanie  </button>-->
+    <a href="/menuziak" class="btn btn-lg btn-block btn-danger">Ukončiť voľné písanie</a>
+    <a href="/menuziak" class="btn btn-lg btn-block btn-default">Späť do menu</a>
 </div>

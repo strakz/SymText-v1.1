@@ -11,8 +11,10 @@ angular.module('SymText')
                             $rootScope.currentUser = data;
                             if (data.role === 1) {
                                 $location.path('/adminmenu');
-                            }else if(data.role===0){
-                                $location.path('/');
+                            } else if (data.role === 0) {
+                                $location.path('/ucitelmenu');
+                            } else if (data.role === 2) {
+                                $location.path('/menuziak');
                             }
                             $alert({
                                 title: 'Vitajte!',
@@ -35,7 +37,30 @@ angular.module('SymText')
                 signup: function (user) {
                     return $http.post('/api/signup', user)
                         .success(function () {
-                            $location.path('/login');
+                            $location.path('/adminmenu');
+
+                            $alert({
+                                title: 'Vitajte!',
+                                content: 'Registrácia prebehla úspešne.',
+                                placement: 'top-right',
+                                type: 'success',
+                                duration: 3
+                            });
+                        })
+                        .error(function (response) {
+                            $alert({
+                                title: 'Chyba! Zadajte iné prihlasovacie meno',
+                                content: response.data,
+                                placement: 'top-right',
+                                type: 'danger',
+                                duration: 10
+                            });
+                        });
+                },
+                signupStudent: function (user) {
+                    return $http.post('/api/signupStudent', user)
+                        .success(function () {
+                            $location.path('/adminmenu');
 
                             $alert({
                                 title: 'Vitajte!',

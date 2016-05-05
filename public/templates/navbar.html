@@ -5,6 +5,12 @@
         <a ng-if="currentUser.role===1" class="navbar-brand" href="/adminmenu">
             <span class="glyphicon glyphicon-education"></span>
             Symbol-<strong>Text</strong> Education</a>
+        <a ng-if="currentUser.role===0" class="navbar-brand" href="/ucitelmenu">
+            <span class="glyphicon glyphicon-education"></span>
+            Symbol-<strong>Text</strong> Education</a>
+        <a ng-if="currentUser.role===2" class="navbar-brand" href="/menuziak">
+            <span class="glyphicon glyphicon-education"></span>
+            Symbol-<strong>Text</strong> Education</a>
         <a ng-if="!currentUser" class="navbar-brand" href="/">
             <span class="glyphicon glyphicon-education"></span>
             Symbol-<strong>Text</strong> Education</a>
@@ -18,29 +24,32 @@
         <!--<li data-match-route="/searchtest"><a href="/searchtest">Testovanie</a> </li>-->
     <!--</ul>-->
     <ul class="nav navbar-nav" ng-if="currentUser.role===0">
-        <!--<li data-match-route="/"><a href="/">Hlavná stránka</a></li>-->
+        <li data-match-route="/ucitelmenu"><a href="/ucitelmenu">Menu</a></li>
         <li data-match-route="/imageupload"><a href="/imageupload">Upload symbolov</a> </li>
-        <li data-match-route="/addtodb"><a href="/addtodb">Vloženie slov</a></li>
-        <li data-match-route="/freeWrite"><a href="/freeWrite">Vytvorenie testu</a> </li>
-        <li data-match-route="/metadata"><a href="/metadata">Prehľad testov</a> </li>
-        <li data-match-route="/searchtest"><a href="/searchtest">Výsledky testov</a> </li>
+        <li data-match-route="/addwords"><a href="/addwords">Vloženie slov</a></li>
+        <li data-match-route="/createtesttemplate"><a href="/createtesttemplate">Vytvorenie testu</a> </li>
+        <li data-match-route="/testOwnMenu"><a href="/testOwnMenu">Prehľad testov</a> </li>
+        <li data-match-route="/testHodnotenie"><a href="/testHodnotenie">Výsledky testov</a> </li>
     </ul>
 
 
     <!--TOTO SA ZOBRAZUJE IBA PRIHLASENEMU ADMINISTRATOROVI V NAV-PANELY-->
     <ul class="nav navbar-nav" ng-if="currentUser.role===1">
         <li data-match-route="/adminmenu"><a href="/adminmenu">Admin Menu</a> </li>
-        <li data-match-route="/signup"><a href="/signup">Registracia ucitela</a> </li>
+        <li data-match-route="/signup"><a href="/signup">Registrácia učiteľa</a> </li>
+        <li data-match-route="/photoUpload"><a href="/photoUpload">Registrácia žiaka</a> </li>
+
     </ul>
 
 
     <ul class="nav navbar-nav pull-right" ng-if="!currentUser">
+        <li data-match-route="/loginstudent"><a href="/loginStudent"><span class="glyphicon glyphicon-log-in"></span> Prihlásenie žiaka</a></li>
         <li data-match-route="/login"><a href="/login"><span class="glyphicon glyphicon-log-in"></span> Prihlásenie učiteľa</a></li>
-        <li data-match-route="/signup"><a href="/signup">Registrácia </a></li>
+
     </ul>
     <ul class="nav navbar-nav pull-right" ng-if="currentUser">
         <li class="navbar-text"><span class="glyphicon glyphicon-user"></span> Prihlásený používateľ:</li>
-        <li class="navbar-text" ng-bind="currentUser.fullname"></li>
+       <strong> <li class="navbar-text" style="color:#8c7373" ng-bind="currentUser.fullname"></li></strong>
         <li><a href="javascript:void(0)" ng-click="logout()"><span class="glyphicon glyphicon-log-out"></span>Odhlásiť</a></li>
     </ul>
 </div>

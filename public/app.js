@@ -3,6 +3,10 @@ angular.module('SymText', ['ngCookies', 'ngResource', 'ngMessages', 'ngRoute','m
         $locationProvider.html5Mode(true);
         $routeProvider
             .when('/', {
+                templateUrl: 'templates/loginStudent.html',
+                controller: 'LoginStudentCtrl'
+            })
+            .when('/menuziak', {
                 templateUrl: 'templates/home.html',
                 //controller: 'MainCtrl'
             })
@@ -14,12 +18,27 @@ angular.module('SymText', ['ngCookies', 'ngResource', 'ngMessages', 'ngRoute','m
                 templateUrl: 'templates/login.html',
                 controller: 'LoginCtrl'
             })
+            .when('/loginstudent', {
+                templateUrl: 'templates/loginStudent.html',
+                controller: 'LoginStudentCtrl'
+            })
+            .when('/loginStudent', {
+                templateUrl: 'templates/loginstudentForm.html',
+                controller: 'LoginStudentCtrl'
+            })
             .when('/signup', {
                 templateUrl: 'templates/signup.html',
                 controller: 'SignupCtrl'
             })
+            .when('/signupStudent', {
+                templateUrl: 'templates/signupStudent.html',
+                controller: 'SignupStudentCtrl'
+            })
             .when('/adminmenu',{
                 templateUrl: 'templates/adminMenu.html'
+            })
+            .when('/ucitelmenu',{
+                templateUrl: 'templates/teacherMenu.html'
             })
             .when('/addtodb', {
                 templateUrl: 'templates/addtoDB.html'
@@ -33,6 +52,10 @@ angular.module('SymText', ['ngCookies', 'ngResource', 'ngMessages', 'ngRoute','m
                 templateUrl: 'templates/fileUpload.html',
                 controller: 'ImgupCtrl'
             })
+            .when('/photoUpload',{
+                templateUrl: 'templates/studentPhotoUpload.html',
+                controller: 'PhotoUpldCtrl'
+            })
             .when('/searchtest',{
                 templateUrl: 'templates/searching.html',
                 controller: 'SrchCtrl'
@@ -40,6 +63,10 @@ angular.module('SymText', ['ngCookies', 'ngResource', 'ngMessages', 'ngRoute','m
             .when('/userlist',{
                 templateUrl: 'templates/users.html',
                 controller: 'UserListCtrl'
+            })
+            .when('/studentlist',{
+                templateUrl: 'templates/students.html',
+                controller: 'StudentListCtrl'
             })
             .when('/wordlist',{
                 templateUrl: 'templates/wordlist.html',
@@ -73,13 +100,21 @@ angular.module('SymText', ['ngCookies', 'ngResource', 'ngMessages', 'ngRoute','m
                 templateUrl: 'templates/testMenu.html',
                 controller: 'TestMenuCtrl'
             })
-            .when('/testView',{
+            .when('/tests/:id',{
                 templateUrl: 'templates/testView.html',
                 controller: 'TestViewCtrl'
             })
-            .when('/testViewOwn',{
+            .when('/testOwnMenu',{
+                templateUrl: 'templates/testOwnMenu.html',
+                controller: 'TestOwnMenuCtrl'
+            })
+            .when('/testsOwn/:id',{
                 templateUrl: 'templates/testOwnView.html',
                 controller: 'TestOwnViewCtrl'
+            })
+            .when('/testHodnotenie',{
+                templateUrl: 'templates/testResults.html',
+                controller: 'TestRsltCtrl'
             })
             .otherwise({
                 redirectTo: '/'

@@ -3,13 +3,14 @@ angular.module('SymText')
 
 $scope.create=function(){
     console.log($scope.test)
+
     $http({
         url: '/testDone',
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         data: $scope.test
     }).success(function (response) {
-        $location.path('/teachermenu')
+        $location.path('/ucitelmenu')
 
     })
 }

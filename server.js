@@ -24,9 +24,10 @@ var app = express();
 var resultSchema = new mongoose.Schema({
     testText: String,
     Author: String,
-    test_time: Number,
+    testTime: Number,
     testName: String,
-    testId: String
+    testId: String,
+    mistake: Number
 })
 
 var testSchema = new mongoose.Schema({
@@ -47,6 +48,13 @@ var wordSchema = new mongoose.Schema({
     imageID: String
 });
 
+var studentSchema = new mongoose.Schema({
+    username: String,
+    password: String,
+    fullname: String,
+    role: Number,
+    photoId: String
+});
 
 var userSchema = new mongoose.Schema({
     username: {type: String, unique: true, required: true},
@@ -79,13 +87,14 @@ userSchema.methods.comparePassword = function (candidatePassword, cb) {
         cb(null, isMatch);
     });
 };
-var imageSchema = new mongoose.Schema({});
+
 
 var Word = mongoose.model('Word', wordSchema);
 var User = mongoose.model('User', userSchema);
+var Student = mongoose.model('Student', studentSchema);
 var Test = mongoose.model('Test', testSchema);
 var Result = mongoose.model('Result', resultSchema);
-var ImageDB = mongoose.model('imgDB', imageSchema);
+
 mongoose.connect('mongodb://localhost/symtext');
 var conn = mongoose.connection;
 Grid.mongo = mongoose.mongo;
@@ -105,15 +114,34 @@ passport.deserializeUser(function (id, done) {
 
 
 passport.use(new LocalStrategy({usernameField: 'username'}, function (username, password, done) {
-    User.findOne({username: username}, function (err, user) {
+    console.log(username);
+    Student.findOne({username: username}, function (err, student) {
         if (err) return done(err);
-        if (!user) return done(null, false);
-        user.comparePassword(password, function (err, isMatch) {
-            if (err) return done(err);
-            if (isMatch) return done(null, user);
-            return done(null, false);
-        });
-    });
+        if (student) {
+            if (student.password === password) {
+                return done(null, student);
+            } else {
+                return done(null, false);
+            }
+        } else {
+
+            User.findOne({username: username}, function (err, user) {
+                if (err) {
+                    console.log('eroruz tu');
+                    return done(err);
+                }
+                if (!user) {
+                    console.log('eror userdaco');
+                    return done(null, false);
+                }
+                user.comparePassword(password, function (err, isMatch) {
+                    if (err) return done(err);
+                    if (isMatch) return done(null, user);
+                    return done(null, false);
+                });
+            });
+        }
+    })
 }));
 
 
@@ -121,22 +149,21 @@ app.set('port', process.env.PORT || 3000);
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json({type: 'application/vnd.api+json'}));
 app.use(cookieParser());
-app.use(session({secret: 'keyboard cat', cookie: {maxAge: 60000}, resave: true, saveUninitialized: true}));
+app.use(session({secret: 'keyboard cat', cookie: {maxAge: 600000}, resave: true, saveUninitialized: true}));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.static(path.join(__dirname, 'public')));
+
 app.use(function (req, res, next) {
     if (req.user) {
         res.cookie('user', JSON.stringify(req.user));
     }
     next();
 });
-//app.use(multer({dest: './uploads/'}));
 
-app.get('*', function (req, res) {
-    res.redirect('/#' + req.originalUrl);
-});
+
 //save to Word schema
 app.post('/api/words', function (req, res) {
     console.log('daco tu pisem');
@@ -160,6 +187,85 @@ app.post('/api/words', function (req, res) {
 
     })
 });
+
+//photoStudentUpload
+app.post('/api/photoUp', function (req, res) {
+    console.log(req.headers);
+    console.log('Id Obrazka :' + idImg);
+    var value, val2;
+    if (req.method === 'POST') {
+        var busboy = new Busboy({
+            headers: req.headers
+        });
+        busboy.on('file', function (fieldname, file, filename, encoding,
+                                    mimetype) {
+            //console.log('daco jak fieldname'+req.body.texfield);
+            console.log('File [' + fieldname + ']: filename: ' + filename
+                + ', encoding: ' + encoding + ', mimetype: ' + mimetype);
+
+            console.log('slova' + val2 + ' ,' + value);
+
+            // ----------kontrola ci sa uz subor nenachadza-------------
+            gfs.findOne({filename: filename}, function (err, files) {
+                if (err) return next(err);
+                if (files === null || files === undefined) {
+                    console.log('nenaslo sa nic');
+                    var ws = gfs.createWriteStream({
+                        mode: 'w',
+                        content_type: mimetype,
+                        filename: filename,
+                        aliases: val2,
+                        metadata: {
+                            slovo: value
+
+                        }
+                    });
+                    ws.on('close', function (file) {
+                        console.log(file._id);
+                        idImg = file._id;
+                    });
+                    file.pipe(ws);
+                    req.pipe(busboy);
+                } else {
+                    console.log('zhoda v nazve suboru')
+                    console.log(files._id);
+                    idImg = files._id;
+                    //res.sendStatus(200);
+                    res.writeHead(303, {
+                        Connection: 'close',
+                        Location: '/signupStudent'
+                    });
+                    res.end();
+
+                }
+
+            })
+
+        });
+
+        busboy.on('field', function (fieldname, val, fieldnameTruncated,
+                                     valTruncated, encoding, mimetype) {
+            console.log('Field [' + fieldname + ']: value: ' + val);
+            if (value === null || value === undefined) {
+                value = val;
+            } else {
+                val2 = val;
+            }
+
+        });
+        busboy.on('finish', function () {
+            console.log('Done parsing form!');
+            console.log(idImg + 'vs');
+            res.writeHead(303, {
+                Connection: 'close',
+                Location: '/signupStudent'
+            });
+            res.end();
+        });
+        req.pipe(busboy);
+    }
+});
+
 // skuska save image to DB
 app.post('/api/imgUp', function (req, res) {
     console.log(req.headers);
@@ -385,6 +491,21 @@ app.post('/api/signup', function (req, res, next) {
         res.sendStatus(200);
     });
 });
+app.post('/api/signupStudent', function (req, res, next) {
+
+    var user = new Student({
+        username: req.body.username,
+        password: req.body.password,
+        fullname: req.body.fullname,
+        role: req.body.role,
+        photoId: idImg
+
+    });
+    user.save(function (err) {
+        if (err) return next(err);
+        res.sendStatus(200);
+    });
+});
 
 app.post('/api/hladaj', function (req, res) {
     console.log('text len tak ci tu dosiel');
@@ -472,6 +593,32 @@ app.post('/api/wordsadd', function (req, res) {
 
     })
 });
+app.post('/photoStudent', function (req, res) {
+    var fajlnejm
+    console.log(req.body.query)
+    var query = req.body.query;
+
+    gfs.findOne({_id: query}, function (err, files) {
+        if (err) return next(err);
+        console.log(files.filename)
+        fajlnejm = files.filename
+
+        var rstream = gfs.createReadStream(fajlnejm);
+        var bufs = [];
+        rstream.on('data', function (chunk) {
+            bufs.push(chunk);
+        }).on('end', function () {
+            var fbuf = Buffer.concat(bufs);
+            var base64 = (fbuf.toString('base64'));
+            //res.send('<img src="data:image/jpeg;base64,' + base64 + '">');
+            //console.log(base64)
+            res.send(base64);
+        });
+    })
+
+});
+
+//obrazku do testu a free write
 app.post('/imgskuska', function (req, res) {
     //var files = gfs.files.find({}).toArray(function (err, files) {
     //    //console.log('nazov ' + files[0].filename);
@@ -581,8 +728,10 @@ app.post('/imgskuska', function (req, res) {
 //vytvorenie testu na zaklade pisania slov
 app.post('/createtestText', function (req, res) {
     console.log(req.body.query);
+    console.log(req.body.autor)
     var testDB = new Test({
-        testText: req.body.query
+        testText: req.body.query,
+        author: req.body.autor
     })
     testDB.save(function (err, test) {
         if (err) {
@@ -637,10 +786,17 @@ app.post('/getTestText', function (req, res) {
 
 })
 
+//save student test with score ..
 app.post('/saveStudentTest', function (req, res) {
-    console.log(req.body.query)
+    console.log(req.body.query);
+    console.log(req.body.testId);
+    console.log(req.body.student);
+    console.log(req.body.testName);
     var result = new Result({
-        testText: req.body.query
+        testText: req.body.query,
+        Author: req.body.student,
+        testId: req.body.testId,
+        testName: req.body.testName
     })
     result.save(function (err, test) {
             if (err) {
@@ -649,14 +805,70 @@ app.post('/saveStudentTest', function (req, res) {
             res.status(200).send(null);
         }
     )
+});
+app.get('/api/tests', function (req, res, next) {
+    var query = Test.find();
+
+    query.limit(12);
+
+    query.exec(function (err, tests) {
+        if (err) return next(err);
+        res.send(tests);
+    });
+});
+
+app.get('/api/results', function(req,res){
+    Result.find(function(err, rslt){
+        if(err) res.send(err)
+
+        res.json(rslt)
+
+    })
+
 
 })
 
-app.get('/api/logout', function (req, res, next) {
-    req.logout();
-    res.send(200);
+app.get('/api/tests/:id', function (req, res, next) {
+    console.log('get tests id')
+    console.log(req.params.id)
+    Test.findById(req.params.id, function (err, test) {
+        if (err) return next(err);
+
+        console.log(test)
+        res.send(test);
+    });
+});
+app.get('/api/getAllStudents', function (req, res) {
+    console.log('prebehla uspesne');
+    Student.find(function (err, student) {
+        if (err) res.send(err)
+        console.log(student);
+
+        res.json(student)
+
+    })
+})
+
+app.post('/api/getTestText', function (req, res) {
+    console.log('get Tests')
+    Test.find(function (err, test) {
+        if (err)
+            res.send(err);
+
+        console.log(test);
+        res.json(test)
+    });
 });
 
+app.get('/api/logout', function (req, res, next) {
+    console.log('vykonasa')
+    req.logout();
+    res.sendStatus(200);
+});
+
+app.get('*', function (req, res) {
+    res.redirect('/#' + req.originalUrl);
+});
 
 function ensureAuthenticated(req, res, next) {
     if (req.isAuthenticated()) next();

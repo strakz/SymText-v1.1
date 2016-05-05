@@ -1,10 +1,19 @@
-<div class="container">
+<div class="container" ng-init="getTests()">
 
     <div class="row">
         <div class="center-formEx panel">
             <div class="panel-body">
                 <h2 class="text-center">Vyberte Test</h2>
-
+                <form name="menuForm">
+                    <div ng-repeat="test in tests">
+                       <div ng-show="test.isVissible">
+                        <a href="/tests/{{test._id}}"
+                            class=" btn btn-lg btn-block btn-primary " >{{test.testName}}</a>
+                        <div style="display: inline-block;"></div>
+                       </div>
+                    </div>
+                </form>
+                <a href="/menuziak" class="btn btn-lg btn-block btn-danger">Späť do hlavného menu</a>
 
             </div>
         </div>
