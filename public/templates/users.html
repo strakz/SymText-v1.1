@@ -33,7 +33,9 @@
                                     <td class="center-form">{{user.username}}</td>
                                     <td class="center-form">{{user.fullname}}</td>
                                     <td class="center-form" ng-if="user.role ==1">Administrator</td><td class="center-form" ng-if="!user.role ==1">Učiteľ</td>
-                                    <td><div class="col-xs-3 text-right"><a href="" class="btn btn-primary btn-sm"><span>Edit</span></a></div></td>
+                                    <td><div class="col-xs-3 text-right"><a href="/edituser/{{user._id}}"
+                                                                            class=" btn btn-sm btn-primary ">Upraviť</a></div></td>
+                                    <td><div class="col-xs-3 text-right"><button class="btn btn-danger btn-sm" ng-click="delete(this)"><span>Vymazať</span></button></div></td>
                                 </tr>
                                 </tbody>
                             </table>

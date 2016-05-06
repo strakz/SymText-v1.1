@@ -1,76 +1,69 @@
 <div class="container">
-    ´    <div class="row">
-    <div class="center-formEx panel">
-        <form method="post" ng-submit="create()" name="createWordForm">
-            <div class="panel-body">
-                <h2 class="text-center">Vkladanie nových slov k existujúcemu obrázku </h2>
-                <p class="text-center">Slúži na pridávanie iných tvarov slov s rovnakým významom ako je základny tvar slova</p>
+    <div class="row">
+        <div class="center-formEx panel">
+            <form method="post" ng-submit="create()" name="createWordForm">
+                <div class="panel-body">
+                    <h2 class="text-center">Vkladanie nových slov k existujúcemu obrázku </h2>
+                    <p class="text-center">Slúži na pridávanie iných tvarov slov s rovnakým významom ako je základny
+                        tvar slova</p>
 
-                <div class="form-group"
-                     ng-class="{ 'has-success' : username.$valid && username.$dirty, 'has-error' : username.$invalid && username.$dirty }">
-                    <input class="form-control input-lg" type="text" id="word"
-                           name="word" ng-model="word.word" placeholder="základný tvar slova" required
-                           autofocus>
+                    <div class="form-group"
+                         ng-class="{ 'has-success' : wordType.$valid && wordType.$dirty, 'has-error' : wordType.$invalid && wordType.$dirty }">
+                        <input class="form-control input-lg" type="text" id="word"
+                               name="word" ng-model="word.word" placeholder="základný tvar slova" required
+                               autofocus>
 
-                    <div class="help-block text-danger" ng-if="word.$dirty"
-                         ng-messages="word.$error">
-                        <div ng-message="required">Vyplňte slovo</div>
+                        <div class="help-block text-danger" ng-if="word.$dirty"
+                             ng-messages="word.$error">
+                            <div ng-message="required">Vyplňte slovo</div>
+
+                        </div>
+                    </div>
+
+                    <div class="form-group"
+                         ng-class="{ 'has-success' : wordType.$valid && wordType.$dirty, 'has-error' : wordType.$invalid && wordType.$dirty }">
+                        <input class="form-control input-lg" type="text" name="wordType"
+                               ng-model="word.wordType" placeholder="slovny druh" required>
+
+                        <div class="help-block text-danger"
+                             ng-if="wordType.$dirty"
+                             ng-messages="wordType.$error">
+                            <div ng-message="required">Zadajte slovny druh!</div>
+                        </div>
+                        <label class="input-lg" for="singleSelect"> Slovný druh: </label><br>
+                        <select class="form-control input-lg" name="singleSelect" ng-model="word.singleSelect" required>
+                            <option value="podstatne">Podstatné meno</option>
+                            <option value="pridavne">Prídavné meno</option>
+                            <option value="sloveso">Sloveso</option>
+                            <option value="zameno">Zámeno</option>
+                            <option value="predlozka">Predložka</option>
+
+                        </select><br>
 
                     </div>
+
+                    <!--<div class="form-group"-->
+                    <!--ng-class="{ 'has-success' : filename.$valid && filename.$dirty, 'has-error' : filename.$invalid && filename.$dirty }">-->
+                    <!--<input class="form-control input-lg" type="text"-->
+                    <!--name="filename" ng-model="word.filename"-->
+                    <!--placeholder="Nazov suboru"-->
+                    <!--required>-->
+
+                    <!--<div class="help-block text-danger my-special-animation"-->
+                    <!--ng-if="filename.$dirty"-->
+                    <!--ng-messages="filename.$error">-->
+                    <!--<div ng-message="required">Zadajte nazov suboru!</div>-->
+
+                    <!--</div>-->
+                    <!--</div>-->
+
+                    <button type="submit" ng-disabled="createWordForm.$invalid"
+                            class="btn btn-lg btn-block btn-primary">Vytvorenie slova
+                    </button>
                 </div>
-
-                <div class="form-group"
-                     ng-class="{ 'has-success' : wordType.$valid && wordType.$dirty, 'has-error' : wordType.$invalid && wordType.$dirty }">
-                    <input class="form-control input-lg" type="text" name="wordType"
-                           ng-model="word.wordType" placeholder="slovny druh" required>
-
-                    <div class="help-block text-danger"
-                         ng-if="wordType.$dirty"
-                         ng-messages="wordType.$error">
-                        <div ng-message="required">Zadajte slovny druh!</div>
-                    </div>
-                    <label class="input-lg" for="singleSelect"> Slovný druh: </label><br>
-                    <select class="form-control input-lg" name="singleSelect"  ng-model="word.singleSelect" required>
-                        <option value="podstatne">Podstatné meno</option>
-                        <option value="pridavne">Prídavné meno</option>
-                        <option value="sloveso">Sloveso</option>
-                        <option value="zameno">Zámeno</option>
-                        <option value="predlozka">Predložka</option>
-
-                    </select><br>
-
-                </div>
-
-                <div class="form-group"
-                     ng-class="{ 'has-success' : filename.$valid && filename.$dirty, 'has-error' : filename.$invalid && filename.$dirty }">
-                    <input class="form-control input-lg" type="text"
-                           name="filename" ng-model="word.filename"
-                           placeholder="Nazov suboru"
-                           required>
-
-                    <div class="help-block text-danger my-special-animation"
-                         ng-if="filename.$dirty"
-                         ng-messages="filename.$error">
-                        <div ng-message="required">Zadajte nazov suboru!</div>
-
-                    </div>
-                </div>
-
-                <button type="submit" ng-disabled="createWordForm.$invalid"
-                        class="btn btn-lg btn-block btn-primary">Vytvorenie slova
-                </button>
-            </div>
-        </form>
-        <!--<div class="center-form panel">-->
-        <!--<form method="POST" action="/api/imgUp" enctype="multipart/form-data">-->
-        <!--<input class="form-control input-lg"type="text" name="textfield" placeholder="slovo"><br/>-->
-        <!--<input class="form-control input-lg" type="text" name="textfield2" placeholder="alias"><br/>-->
-        <!--<input class="form-control input-lg" type="file" name="filefield"><br/>-->
-        <!--<input  type="submit" class="btn btn-lg btn-primary">-->
-        <!--</form>-->
-        <!--</div>-->
+            </form>
 
 
+        </div>
     </div>
-</div>
 </div>

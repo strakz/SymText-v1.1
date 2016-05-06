@@ -5,6 +5,8 @@ angular.module('SymText')
         if($scope.odpoved === undefined){
             $scope.odpoved='';
         }
+
+        //pomocna metoda pri vyhladavani slov ..pripavena funkcionalita na autocompleete
         $scope.hladaj = function () {
             //$http.post('/api/words', $scope.find.slovo)
             $http({

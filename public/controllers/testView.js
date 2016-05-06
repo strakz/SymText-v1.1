@@ -8,7 +8,10 @@ angular.module('SymText')
         var testText;
         var origText;
         var mistake=0;
+
+        //
         console.log($scope.currentUser)
+        //ziskanie porebnych udajov k zobrazeniu testu
         $scope.getTests = function () {
             console.log('hned sa vykonala');
             $http({
@@ -29,6 +32,7 @@ angular.module('SymText')
             })
         }
 
+        //odoslanie vysledku testu
         $scope.uloz = function () {
             testText = '';
             $scope.texts = [$scope.text1, $scope.text2, $scope.text3, $scope.text4, $scope.text5, $scope.text6, $scope.text7, $scope.text8, $scope.text9, $scope.text10, $scope.text11, $scope.text12]
@@ -63,9 +67,9 @@ angular.module('SymText')
 
             })
 
-        }
+        };
 
-
+        //zobrazenie obrazkov na zaklate textu
         function showImages(i, testtext) {
             console.log(i)
             $http({

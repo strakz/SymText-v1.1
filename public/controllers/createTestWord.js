@@ -6,6 +6,7 @@ angular.module('SymText')
         var loggedUser=$rootScope.currentUser.fullname;
 
         var testText;
+        //prehladavanie DB pocas vytvarania testu
         $scope.search = function (event, fieldValue) {
 
             console.log(fieldValue)
@@ -21,6 +22,7 @@ angular.module('SymText')
 
         };
 
+        //ulozenie grafickeho testu
         $scope.uloz = function () {
             testText='';
             $scope.texts = [$scope.text1, $scope.text2, $scope.text3, $scope.text4, $scope.text5, $scope.text6, $scope.text7, $scope.text8, $scope.text9, $scope.text10, $scope.text11, $scope.text12]
@@ -45,8 +47,8 @@ angular.module('SymText')
 
             })
 
-        }
-
+        };
+        //funkcia zabezpeci zobrazenie obrazka
         function showResult(fieldValue, response) {
             switch (fieldValue) {
                 case $scope.text1:

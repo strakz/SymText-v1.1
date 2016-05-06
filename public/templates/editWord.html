@@ -2,14 +2,15 @@
     ´
     <div class="row">
         <div class="center-formEx panel">
-            <form method="post" ng-submit="create()" name="createWordForm">
+            <form method="post" ng-submit="edit()" name="EditWordForm">
                 <div class="panel-body">
-                    <h2 class="text-center">Prepojenie slova s nahratým obrázkom </h2>
-
+                    <h2 class="text-center" style="color: #0a63d4">Úprava slova: <span style="color:#bd362f"> {{word.word}}</span>
+                    </h2>
+                    <br>
                     <div class="form-group">
                         <input class="form-control input-lg" type="text" id="word"
                                name="word" ng-model="word.word" placeholder="základný tvar slova" required
-                               autofocus>
+                        >
 
                         <div class="help-block text-danger" ng-if="word.$dirty"
                              ng-messages="word.$error">
@@ -39,27 +40,14 @@
 
                     </div>
 
-                    <div class="form-group"
-                         ng-class="{ 'has-success' : filename.$valid && filename.$dirty, 'has-error' : filename.$invalid && filename.$dirty }">
-                        <input class="form-control input-lg" type="text"
-                               name="filename" ng-model="word.filename"
-                               placeholder="Nazov suboru"
-                               required>
-
-                        <div class="help-block text-danger my-special-animation"
-                             ng-if="filename.$dirty"
-                             ng-messages="filename.$error">
-                            <div ng-message="required">Zadajte nazov suboru!</div>
-
-                        </div>
-                    </div>
 
                     <button type="submit" ng-disabled="createWordForm.$invalid"
-                            class="btn btn-lg btn-block btn-primary">Vytvorenie slova
+                            class="btn btn-lg btn-block btn-primary">Uložiť zmeny
                     </button>
                 </div>
             </form>
-
+            <a href="/adminmenu" class="btn btn-lg btn-block btn-default">Späť do menu</a>
         </div>
+
     </div>
 </div>

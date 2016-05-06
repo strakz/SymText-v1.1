@@ -1,6 +1,7 @@
 angular.module('SymText')
     .controller('AddWordsCtrl', ['$scope', '$http', '$alert', function ($scope, $http, $alert) {
 
+        //ulozenie slov a zaslanie na stranu servera na spracovanie a ulozenie
         $scope.addwords = function () {
             console.log($scope.word.mainWord);
             console.log($scope.word.names);

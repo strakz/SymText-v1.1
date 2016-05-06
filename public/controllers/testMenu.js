@@ -1,6 +1,7 @@
 angular.module('SymText')
     .controller('TestMenuCtrl', ['$scope', '$http', 'Test', function ($scope, $http, Test) {
 
+        //menu vsetkych dostupnych testov
         $scope.getTests = function () {
                $http.post('/api/getTestText')
                 .success(function (data) {

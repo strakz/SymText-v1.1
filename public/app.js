@@ -30,6 +30,10 @@ angular.module('SymText', ['ngCookies', 'ngResource', 'ngMessages', 'ngRoute','m
                 templateUrl: 'templates/signup.html',
                 controller: 'SignupCtrl'
             })
+            .when('/edituser/:id', {
+                templateUrl: 'templates/editUser.html',
+                controller: 'EditUserCtrl'
+            })
             .when('/signupStudent', {
                 templateUrl: 'templates/signupStudent.html',
                 controller: 'SignupStudentCtrl'
@@ -47,6 +51,10 @@ angular.module('SymText', ['ngCookies', 'ngResource', 'ngMessages', 'ngRoute','m
             .when('/createWord',{
                 templateUrl: 'templates/createWord.html',
                 controller: 'CreateWordCtrl'
+            })
+            .when('/words/:id',{
+                templateUrl: 'templates/editWord.html',
+                controller: 'EditWordCtrl'
             })
             .when('/imageupload',{
                 templateUrl: 'templates/fileUpload.html',

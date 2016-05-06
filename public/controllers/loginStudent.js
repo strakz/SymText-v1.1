@@ -2,7 +2,8 @@ angular.module('SymText')
     .controller('LoginStudentCtrl', ['$scope','$http', 'Auth', function($scope,$http, Auth) {
         var imageArray=[];
         var imageBase64=[];
-       $scope.load=function(){
+        //zobrazenie profilovych obrazkov ziakov
+        $scope.load=function(){
            $http({
                url: '/api/getAllStudents',
                method: 'GET',
@@ -19,6 +20,8 @@ angular.module('SymText')
 
            });
        }
+
+        //prihlasenie studenta
 $scope.loginSt=function(student){
     console.log(student)
     Auth.login({
@@ -26,14 +29,15 @@ $scope.loginSt=function(student){
         password: student.password
     });
 }
+        ////prihla
+        //$scope.login = function() {
+        //    Auth.login({
+        //        username: $scope.username,
+        //        password: $scope.password
+        //    });
+        //};
 
-        $scope.login = function() {
-            Auth.login({
-                username: $scope.username,
-                password: $scope.password
-            });
-        };
-
+        //zobrazenie obrazkov pomocna metoda
         function showImages(i, imageArray) {
             console.log(i)
             console.log(imageArray[i])

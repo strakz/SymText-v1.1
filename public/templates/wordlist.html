@@ -1,6 +1,6 @@
 <div class="container">
     <div class="row">
-        <div class="center-formEx panel">
+        <div class=" panel">
             <div class="panel-body">
                 <h2 class="text-center">Zoznam slov</h2>
                 <!--<div ng-cloak ng-show="showList != 0">-->
@@ -25,6 +25,7 @@
                                 <th class="center-form">Slovo</th>
                                 <th class="center-form">Slovny druh</th>
                                 <th class="center-form">ID-obrazku</th>
+                                <th class="center-form">Kategórie slova</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -33,7 +34,10 @@
                                 <td class="center-form">{{word.word}}</td>
                                 <td class="center-form">{{word.wordType}}</td>
                                 <td class="center-form">{{word.imageID}}</td>
-                                <td><div class="col-xs-3 text-right"><a href="" class="btn btn-primary btn-sm"><span>Upraviť</span></a></div></td>
+                                <td class="center-form">{{word.category}}</td>
+                                <td> <div class="col-xs-3 text-right"><a href="/words/{{word._id}}"
+                                        class=" btn btn-sm btn-primary ">Upraviť</a></div></td>
+                                <td><div class="col-xs-3 text-right"><button class="btn btn-danger btn-sm" ng-click="delete(this)"><span>Vymazať</span></button></div></td>
                             </tr>
                             </tbody>
                         </table>
@@ -41,6 +45,7 @@
                 </div>
 
             </div>
+            <a href="/adminmenu" class="btn btn-lg btn-block btn-danger">Späť do menu</a>
         </div>
     </div>
 </div>

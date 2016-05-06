@@ -8,7 +8,7 @@ angular.module('SymText')
     //$scope.getMoviesList = function (val) {
 
 
-
+        //zoznam pouzivatelov
         $http.post('/api/getusers').success(function (data) {
             // now we have all our movies and can add them
             $scope.users = data;
@@ -32,4 +32,21 @@ angular.module('SymText')
                 $scope.showList = false;
             }
         });
+
+        $scope.edit=function(user){
+            console.log(user.user._id)
+        };
+
+        $scope.delete = function (user) {
+            console.log(user.user._id);
+            $http({
+                url: '/api/deleteUser',
+                method: 'POST',
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                data: 'query=' + user.user._id
+            }).success(function (response) {
+                console.log('uspesne zmazalo')
+                location.reload();
+            })
+        };
     });

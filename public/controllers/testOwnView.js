@@ -3,6 +3,8 @@ angular.module('SymText')
         var testId = $routeParams.id;
         var testText;
         console.log($scope.currentUser)
+
+        // zobrazit konkretny test
         $scope.getTests = function () {
             console.log('hned sa vykonala');
             $http({
@@ -23,6 +25,7 @@ angular.module('SymText')
             })
         }
 
+        //kontrola testu
         $scope.correct = function () {
             $scope.diss=true;
             var studentText;
@@ -66,7 +69,7 @@ angular.module('SymText')
         //
         //}
 
-
+        //oznacenie vysledkov
         function markResult(i,textColor, backgroundColor) {
             switch (i) {
                 case 0:
@@ -121,7 +124,7 @@ angular.module('SymText')
             }
         }
 
-
+        // zobrazenie obrazkov
         function showImages(i, testtext) {
             console.log(i)
             $http({

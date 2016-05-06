@@ -1,6 +1,7 @@
 angular.module('SymText')
     .controller('TestCtrl', ['$scope', '$http', '$alert', function ($scope, $http, $alert) {
 
+        //pridavanie slov do databazy
         $scope.addwords = function () {
             console.log($scope.word.mainWord);
             console.log($scope.word.names);

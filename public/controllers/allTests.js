@@ -4,7 +4,7 @@ angular.module('SymText')
         $scope.tests = [];
         $scope.showList = false;
 
-
+        //vrati list testov
         $http.get('/api/alltests').success(function (data) {
             // now we have all our movies and can add them
             $scope.tests = data;

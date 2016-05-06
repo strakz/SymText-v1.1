@@ -21,6 +21,7 @@ var Busboy = require('busboy');
 
 var app = express();
 
+//kolekcia predstavujuca vysledky ziakov z absolvovanych testov
 var resultSchema = new mongoose.Schema({
     testText: String,
     Author: String,
@@ -30,6 +31,7 @@ var resultSchema = new mongoose.Schema({
     mistake: Number
 })
 
+//tabulka testov
 var testSchema = new mongoose.Schema({
     testText: String,
     testName: String,
@@ -40,14 +42,15 @@ var testSchema = new mongoose.Schema({
     difficult: String
 
 })
-
+//tabulka slov
 var wordSchema = new mongoose.Schema({
     word: {type: String, unique: true},
     wordType: String,
     filename: String,
-    imageID: String
+    imageID: String,
+    category: String
 });
-
+//tabulka pouzivatelov ziakov
 var studentSchema = new mongoose.Schema({
     username: String,
     password: String,
@@ -55,14 +58,14 @@ var studentSchema = new mongoose.Schema({
     role: Number,
     photoId: String
 });
-
+// tabulka pouzivatelov ADmin,Ucitel
 var userSchema = new mongoose.Schema({
     username: {type: String, unique: true, required: true},
     password: {type: String, required: true},
     fullname: {type: String, required: true},
     role: Number
 });
-
+// riesenie sifrovania hesla pre tabulku pouzivatelov
 userSchema.pre('save', function (next) {
     var user = this;
     if (!user.isModified('password')) return next();
@@ -75,12 +78,7 @@ userSchema.pre('save', function (next) {
         });
     });
 });
-//userSchema.methods.comparePassword = function (candidatePassword, cb) {
-//    bcrypt.compare(candidatePassword, this.password, function (err, isMatch) {
-//        if (err) return cb(err);
-//        cb(null, isMatch);
-//    });
-//};
+// porovnanie hesla pouzivatela
 userSchema.methods.comparePassword = function (candidatePassword, cb) {
     bcrypt.compare(candidatePassword, this.password, function (err, isMatch) {
         if (err) return cb(err);
@@ -88,33 +86,37 @@ userSchema.methods.comparePassword = function (candidatePassword, cb) {
     });
 };
 
-
+//vytvorenie objektu danej tabulky
 var Word = mongoose.model('Word', wordSchema);
 var User = mongoose.model('User', userSchema);
 var Student = mongoose.model('Student', studentSchema);
 var Test = mongoose.model('Test', testSchema);
 var Result = mongoose.model('Result', resultSchema);
 
+//pripojenie k databaze localhost (je prazdna a nutne nainstalovat mongoDB lokalne)
 //mongoose.connect('mongodb://localhost/symtext');
 
+// pripojenie na vzdialeny server Databazy (nie je nutne mat spustene mongod.exe)
 mongoose.connect('mongodb://strakz:heslojeheslo@ds011482.mlab.com:11482/sym_text');
 var conn = mongoose.connection;
+//Vytvorenie instancie gridfs na ukladanie suborov
 Grid.mongo = mongoose.mongo;
 var gfs = new Grid(conn.db);
 var idImg;
 var testId;
 
+//serializacia pouzivatela
 passport.serializeUser(function (user, done) {
     done(null, user.id);
 });
-
+//deserializacia
 passport.deserializeUser(function (id, done) {
     User.findById(id, function (err, user) {
         done(err, user);
     });
 });
 
-
+// lokalna strategia pripojenia pouzivatelov (login)
 passport.use(new LocalStrategy({usernameField: 'username'}, function (username, password, done) {
     console.log(username);
     Student.findOne({username: username}, function (err, student) {
@@ -146,8 +148,9 @@ passport.use(new LocalStrategy({usernameField: 'username'}, function (username, 
     })
 }));
 
-
+//nastavenia portu na ktorom sa aplikacia spusti
 app.set('port', process.env.PORT || 3000);
+//povolenie jednotlivych rozsireni pre Express aplikaciu
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
@@ -168,7 +171,6 @@ app.use(function (req, res, next) {
 
 //save to Word schema
 app.post('/api/words', function (req, res) {
-    console.log('daco tu pisem');
     console.log(req.body.word);
     console.log(req.body.singleSelect);
     if (idImg === null) {
@@ -178,7 +180,8 @@ app.post('/api/words', function (req, res) {
         word: req.body.word,
         wordType: req.body.singleSelect,
         filename: req.body.filename,
-        imageID: idImg
+        imageID: idImg,
+        category: req.body.category
     });
     word.save(function (err, word) {
         idImg = null;
@@ -201,7 +204,6 @@ app.post('/api/photoUp', function (req, res) {
         });
         busboy.on('file', function (fieldname, file, filename, encoding,
                                     mimetype) {
-            //console.log('daco jak fieldname'+req.body.texfield);
             console.log('File [' + fieldname + ']: filename: ' + filename
                 + ', encoding: ' + encoding + ', mimetype: ' + mimetype);
 
@@ -268,7 +270,7 @@ app.post('/api/photoUp', function (req, res) {
     }
 });
 
-// skuska save image to DB
+// save image to DB
 app.post('/api/imgUp', function (req, res) {
     console.log(req.headers);
     console.log('Id Obrazka :' + idImg);
@@ -279,7 +281,7 @@ app.post('/api/imgUp', function (req, res) {
         });
         busboy.on('file', function (fieldname, file, filename, encoding,
                                     mimetype) {
-            //console.log('daco jak fieldname'+req.body.texfield);
+
             console.log('File [' + fieldname + ']: filename: ' + filename
                 + ', encoding: ' + encoding + ', mimetype: ' + mimetype);
 
@@ -321,24 +323,6 @@ app.post('/api/imgUp', function (req, res) {
 
             })
 
-            //var ws = gfs.createWriteStream({
-            //    mode: 'w',
-            //    content_type: mimetype,
-            //    filename: filename,
-            //    aliases: val2,
-            //    metadata: {
-            //        slovo: value
-            //
-            //    }
-            //});
-
-            //ws.on('close', function (file) {
-            //    console.log(file._id);
-            //    idImg = file._id;
-            //});
-
-            //file.pipe(ws);
-            //req.pipe(busboy);
         });
 
         busboy.on('field', function (fieldname, val, fieldnameTruncated,
@@ -363,7 +347,7 @@ app.post('/api/imgUp', function (req, res) {
         req.pipe(busboy);
     }
 });
-//vypis vsetych dat z dB files
+//vypis vsetych metadadat z dB files
 app.post('/metadata', function (req, res) {
     console.log(req.body.textfield);
     console.log('Id z predchadyajucej veci' + idImg);
@@ -395,20 +379,10 @@ app.post('/nieco', function (req, res) {
 
         readstream.pipe(res);
 
-        // gfs.files.find({ filename: "ang.jpg" },function(err, files){
-        // // if(err) return next(err);
-        // //
-        // // if(files.length === 0){
-        // // return next(new Error('File does not exist'));
-        // // }
-        // var file = files[0];
-        // console.log(file);
-        // res.send(JSON.stringify(files))
-        // res.json(200, files);
-        // });
+
     }
 });
-//nejde
+//get image podla ID ..
 app.get('/nieco:id', function (req, res) {
     if (req.method === 'get') {
         console.log('tusom v GET OBRAzok');
@@ -438,6 +412,7 @@ app.get('/nieco:id', function (req, res) {
         // });
     }
 });
+
 //vracia list vsetkych pouzivatelov
 app.post('/api/getusers', function (req, res) {
     User.find(function (err, user) {
@@ -459,27 +434,29 @@ app.post('/api/getwords', function (req, res) {
     })
 });
 
-app.post('/testujem', function (req, res) {
+////
+//app.post('/testujem', function (req, res) {
+//
+//    gfs.findOne({filename: "car.png"}, function (err, files) {
+//        if (err) return next(err);
+//        if (files === null || files === undefined) {
+//            console.log('nenaslo sa nic')
+//
+//        }
+//        //var file = files[0];
+//        console.log(files);
+//        //res.send(JSON.stringify(files))
+//        res.json(200, files);
+//    });
+//});
 
-    gfs.findOne({filename: "car.png"}, function (err, files) {
-        if (err) return next(err);
-        if (files === null || files === undefined) {
-            console.log('nenaslo sa nic')
-
-        }
-        //var file = files[0];
-        console.log(files);
-        //res.send(JSON.stringify(files))
-        res.json(200, files);
-    });
-});
-
+//metoda na prihlasenie pouzivatelov
 app.post('/api/login', passport.authenticate('local'), function (req, res) {
     res.cookie('user', JSON.stringify(req.user));
     res.send(req.user);
 });
 
-
+//registracia pouzivatelov
 app.post('/api/signup', function (req, res, next) {
     console.log(req.body.singleSelect);
     var user = new User({
@@ -493,6 +470,32 @@ app.post('/api/signup', function (req, res, next) {
         res.sendStatus(200);
     });
 });
+//update Users
+app.post('/api/saveEdited', function (req,res) {
+    User.findById(req.body.userID, function(err, user){
+        user.username= req.body.username;
+            user.password= req.body.password;
+            user.fullname= req.body.fullname;
+            user.role= req.body.singleSelect;
+        user.save(function (err) {
+            if(err) res.send(err);
+
+            res.json(user)
+        })
+    })
+});
+//vrati daneho uzivatela
+app.post('/api/getEditedUser', function (req,res) {
+    User.findById(req.body.query, function (err,user) {
+        if(err) res.send(err);
+
+        res.json(user)
+
+    })
+
+});
+
+//registracia ziakov
 app.post('/api/signupStudent', function (req, res, next) {
 
     var user = new Student({
@@ -509,9 +512,9 @@ app.post('/api/signupStudent', function (req, res, next) {
     });
 });
 
+//hladaj slovo podla nazvu
 app.post('/api/hladaj', function (req, res) {
-    console.log('text len tak ci tu dosiel');
-    //console.log('tu je daco?' + req.body);
+
     //var query = {};
     //query.slovo = new RegExp(req.body.slovo, 'i');
     var query = req.body.slovo;
@@ -527,6 +530,9 @@ app.post('/api/hladaj', function (req, res) {
         }
     )
 });
+
+//opravit post na GET..
+//vracia vyhovujuce slova podla query
 app.post('/api/searchExample', function (req, res) {
 
     //var query = {};
@@ -547,13 +553,14 @@ app.post('/api/searchExample', function (req, res) {
             return res.status(200).send(null);
         } else {
             return res.status(200).send(result);
-            //        res.send('odoslane');
+
         }
     })
 
 
 });
 
+//pridat slova do databazy slov
 app.post('/api/wordsadd', function (req, res) {
     var word = req.body.mainWord;
     var newWord = req.body.word;
@@ -595,6 +602,8 @@ app.post('/api/wordsadd', function (req, res) {
 
     })
 });
+
+//nahratie profilovej fotky pre ziaka
 app.post('/photoStudent', function (req, res) {
     var fajlnejm
     console.log(req.body.query)
@@ -620,7 +629,7 @@ app.post('/photoStudent', function (req, res) {
 
 });
 
-//obrazku do testu a free write
+//obrazky do testu a free write
 app.post('/imgskuska', function (req, res) {
     //var files = gfs.files.find({}).toArray(function (err, files) {
     //    //console.log('nazov ' + files[0].filename);
@@ -711,22 +720,9 @@ app.post('/imgskuska', function (req, res) {
             })
 
         }
-
-
-//    var rstream = gfs.createReadStream('car.png');
-//    var bufs = [];
-//    rstream.on('data', function(chunk) {
-//        bufs.push(chunk);
-//    }).on('end', function() {
-//// done
-//        var fbuf = Buffer.concat(bufs);
-//        var base64 = (fbuf.toString('base64'));
-//        //res.send('<img src="data:image/jpeg;base64,' + base64 + '">');
-//        //console.log(base64)
-//        res.send(base64);
-//    });
     })
-})
+});
+
 //vytvorenie testu na zaklade pisania slov
 app.post('/createtestText', function (req, res) {
     console.log(req.body.query);
@@ -744,14 +740,14 @@ app.post('/createtestText', function (req, res) {
     })
     res.status(200).send(null);
 })
-
-app.get('/api/alltests',function(req,res){
-    Test.find(function (err, tests){
-        if(err) res.send(err)
+//vrati vsetky testy z databazy
+app.get('/api/alltests', function (req, res) {
+    Test.find(function (err, tests) {
+        if (err) res.send(err)
 
         res.json(tests)
-    })
-})
+    });
+});
 
 //doplnenie informacii k testu /meno heslo atd
 app.post('/testDone', function (req, res) {
@@ -781,7 +777,9 @@ app.post('/testDone', function (req, res) {
         })
     })
     //res.status(200).send(null);
-})
+});
+
+//vrati text testu z databazy
 app.post('/getTestText', function (req, res) {
     var text;
     console.log(req.body);
@@ -794,9 +792,9 @@ app.post('/getTestText', function (req, res) {
         res.json(test);
     })
 
-})
+});
 
-//save student test with score ..
+//ulozenie vysledku testu ziaka ..
 app.post('/saveStudentTest', function (req, res) {
     console.log(req.body.query);
     console.log(req.body.testId);
@@ -816,6 +814,8 @@ app.post('/saveStudentTest', function (req, res) {
         }
     )
 });
+
+//vrati testy
 app.get('/api/tests', function (req, res, next) {
     var query = Test.find();
 
@@ -827,17 +827,43 @@ app.get('/api/tests', function (req, res, next) {
     });
 });
 
-app.get('/api/results', function(req,res){
-    Result.find(function(err, rslt){
-        if(err) res.send(err)
+//get na slovo podla ID
+app.post('/editWord', function (req, res) {
+    console.log(req.body.query);
+    Word.findById(req.body.query, function (err, word) {
+        if (err)res.send(err)
+
+        res.json(word)
+    })
+});
+
+//update slovo
+app.post('/api/editWord', function (req, res) {
+    Word.findById(req.body.id, function (err, words) {
+        if (err)res.send(err);
+
+        words.word = req.body.word;
+        words.wordType = req.body.singleSelect;
+        words.category = req.body.category;
+        words.save(function (err) {
+            if (err) res.send(err);
+
+            res.json(words);
+        })
+    })
+});
+
+// vrati vsetky vysledky z databazy
+app.get('/api/results', function (req, res) {
+    Result.find(function (err, rslt) {
+        if (err) res.send(err)
 
         res.json(rslt)
 
     })
+});
 
-
-})
-
+//konkretny test podla ID
 app.get('/api/tests/:id', function (req, res, next) {
     console.log('get tests id')
     console.log(req.params.id)
@@ -848,6 +874,8 @@ app.get('/api/tests/:id', function (req, res, next) {
         res.send(test);
     });
 });
+
+//vsetkych studentov z DB
 app.get('/api/getAllStudents', function (req, res) {
     console.log('prebehla uspesne');
     Student.find(function (err, student) {
@@ -857,8 +885,9 @@ app.get('/api/getAllStudents', function (req, res) {
         res.json(student)
 
     })
-})
+});
 
+//Vrati text original testu
 app.post('/api/getTestText', function (req, res) {
     console.log('get Tests')
     Test.find(function (err, test) {
@@ -869,28 +898,59 @@ app.post('/api/getTestText', function (req, res) {
         res.json(test)
     });
 });
+//zmaze studenta z databazy na zaklade ID
+app.post('/api/deleteStudent', function (req, res) {
+    console.log(req.body.query);
+    Student.findByIdAndRemove(req.body.query, function (err) {
+        if (err) res.send(err)
 
+    });
+    res.send(null);
+});
+//zmaze slovo z databazy na zaklade ID
+app.post('/api/deleteWord', function (req, res) {
+    console.log(req.body.query);
+    Word.findByIdAndRemove(req.body.query, function (err) {
+        if (err) res.send(err)
+
+    });
+    res.send(null);
+});
+//zmaze pouzivatela na zaklade ID
+app.post('/api/deleteUser', function (req, res) {
+    console.log(req.body.query);
+    User.findByIdAndRemove(req.body.query, function (err) {
+        if (err) res.send(err)
+
+    });
+    res.send(null);
+});
+
+//odhlasenie prihlaseneho pouzivatela
 app.get('/api/logout', function (req, res, next) {
     console.log('vykonasa')
     req.logout();
     res.sendStatus(200);
 });
 
+//otherwise get metoda,
 app.get('*', function (req, res) {
     res.redirect('/#' + req.originalUrl);
 });
+
 
 function ensureAuthenticated(req, res, next) {
     if (req.isAuthenticated()) next();
     else res.send(401);
 };
 
+//vypis status code 500 v pripade chyby
 app.use(function (err, req, res, next) {
     console.error(err.stack);
     res.status(500).send({message: err.message});
 });
 
-
+//spustenie servery na port definovany hore 3000
 app.listen(app.get('port'), function () {
     console.log('Express server listening on port ' + app.get('port'));
 });

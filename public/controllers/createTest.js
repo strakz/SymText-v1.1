@@ -1,6 +1,7 @@
 angular.module('SymText')
     .controller('TestInfoCtrl', ['$scope', '$http','$location', function ($scope, $http, $location) {
 
+        //doplnenie informacii potrebnych k testu
 $scope.create=function(){
     console.log($scope.test)
 
