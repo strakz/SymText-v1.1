@@ -9,6 +9,7 @@ angular.module('SymText')
         $http.get('/api/results').success(function (data) {
             // now we have all our movies and can add them
             $scope.reslts = data;
+            console.log(data)
             console.log(data.length);
             console.log($scope.reslts.length);
 

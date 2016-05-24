@@ -13,6 +13,7 @@ angular.module('SymText')
             console.log(response.username)
             $scope.username = response.username;
             $scope.password = response.password;
+            $scope.confirmPassword = response.password;
             $scope.fullname = response.fullname;
             $scope.singleSelect = response.role;
             $scope.userID=response._id;

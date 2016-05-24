@@ -1,0 +1,60 @@
+<div class="container">
+    <div class="row">
+        <div class="center-form panel">
+            <form method="post" ng-submit="signup()" name="signupForm">
+                <div class="panel-body">
+                    <h2 class="text-center">Úprava žiaka</h2>
+
+                    <div class="form-group"
+                         ng-class="{ 'has-success' : signupForm.username.$valid && signupForm.username.$dirty, 'has-error' : signupForm.username.$invalid && signupForm.username.$dirty }">
+                        <input class="form-control input-lg" id="username"
+                               name="username" ng-model="username" ng-minlength="3"
+                               ng-maxlength="20"placeholder="Prihlasovacie meno" required
+                               autofocus>
+
+                        <div class="help-block text-danger" ng-if="signupForm.username.$dirty"
+                             ng-messages="signupForm.username.$error">
+                            <div ng-message="required">Vyplňte prihlasovacie meno</div>
+                            <div ng-message="username">Nesprávne prihlasovacie meno</div>
+                            <div ng-message="minlength"&& ng-message="maxlength">Prihlasovacie meno musí obsahovať viac ako 3 znaky</div>
+                            <!--<div ng-message="maxlength">Prihlasovacie meno musí obsahovať menej ako 20 znakov</div>-->
+                        </div>
+                    </div>
+
+                    <div class="form-group"
+                         ng-class="{ 'has-success' : signupForm.password.$valid && signupForm.password.$dirty, 'has-error' : signupForm.password.$invalid && signupForm.password.$dirty }">
+                        <input class="form-control input-lg" type="password" name="password"
+                               ng-model="password" placeholder="Heslo" required>
+
+                        <div class="help-block text-danger"
+                             ng-if="signupForm.password.$dirty"
+                             ng-messages="signupForm.password.$error">
+                            <div ng-message="required">Zadajte heslo!</div>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group"
+                         ng-class="{ 'has-success' : signupForm.fullname.$valid && signupForm.fullname.$dirty, 'has-error' : signupForm.fullname.$invalid && signupForm.fullname.$dirty }">
+                        <input class="form-control input-lg" type="fullname" id="fullname"
+                               name="fullname" ng-model="fullname" ng-minlength="5"
+                               ng-maxlength="20"placeholder="Meno a priezvisko" required
+                               autofocus>
+
+                        <div class="help-block text-danger" ng-if="signupForm.fullname.$dirty"
+                             ng-messages="signupForm.fullname.$error">
+                            <div ng-message="required">Vyplňte vaše meno a priezvisko</div>
+                            <div ng-message="minlength">Celé meno musí obsahovať viac ako 5 znakov</div>
+                            <!--<div ng-message="maxlength">Prihlasovacie meno musí obsahovať menej ako 20 znakov</div>-->
+                        </div>
+                    </div>
+
+
+                    <button type="submit" ng-disabled="signupForm.$invalid"
+                            class="btn btn-lg btn-block btn-primary">Uložiť
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,5 +1,5 @@
 angular.module('SymText')
-    .controller('StudentListCtrl', function ($scope, $http) {
+    .controller('StudentListCtrl', function ($scope, $http, $location) {
 
         $scope.students = [];
         $scope.showList = false;
@@ -22,6 +22,7 @@ angular.module('SymText')
         $scope.edit = function (student) {
             console.log(student.student._id);
             console.log(student)
+            $location.path('/editstudent/'+student.student._id)
         };
 
         $scope.delete = function (student) {

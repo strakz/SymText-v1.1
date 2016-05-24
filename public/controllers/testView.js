@@ -41,27 +41,30 @@ angular.module('SymText')
             for (var i = 0; i < $scope.texts.length; i++) {
 
                 if ($scope.texts[i] === undefined) {
-                    console.log(i)
+                    console.log('nedefinovane daco')
                 } else {
                     testText += $scope.texts[i] + ', ';
+
+                    if(origText[i]===$scope.texts[i]){
+                        console.log('ano')
+
+                    }else{
+                        console.log('ne')
+                        mistake++;
+                        console.log('chyba  ' +mistake)
+
+                    }
                 }
 
-                if(origText[i]===$scope.texts[i]){
-                    console.log('ano')
 
-                }else{
-                    console.log('ne')
-                    mistake++;
-                    console.log('chyba  ' +mistake)
-
-                }
             }
+            console.log('pocet chyb '+mistake)
 
             $http({
                 url: '/saveStudentTest',
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
-                data: {'query':testText, 'testId': testId, 'student':student, 'testName': testName}
+                data: {'query':testText, 'testId': testId, 'student':student, 'testName': testName, 'mistake': mistake}
             }).success(function (response) {
                 $location.path('/menuziak')
 

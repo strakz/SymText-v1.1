@@ -48,8 +48,8 @@ $scope.loginSt=function(student){
                 data: 'query=' +imageArray[i]
             }).success(function (response) {
             imageBase64.push(response);
-                console.log('vykonane'+i)
-                console.log(imageBase64);
+                //console.log('vykonane'+i)
+                //console.log(imageBase64);
                 $scope.datas=imageBase64;
 
             })

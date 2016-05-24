@@ -94,10 +94,10 @@ var Test = mongoose.model('Test', testSchema);
 var Result = mongoose.model('Result', resultSchema);
 
 //pripojenie k databaze localhost (je prazdna a nutne nainstalovat mongoDB lokalne)
-//mongoose.connect('mongodb://localhost/symtext');
+mongoose.connect('mongodb://localhost/symtext');
 
 // pripojenie na vzdialeny server Databazy (nie je nutne mat spustene mongod.exe)
-mongoose.connect('mongodb://strakz:heslojeheslo@ds011482.mlab.com:11482/sym_text');
+//mongoose.connect('mongodb://strakz:heslojeheslo@ds011482.mlab.com:11482/sym_text');
 var conn = mongoose.connection;
 //Vytvorenie instancie gridfs na ukladanie suborov
 Grid.mongo = mongoose.mongo;
@@ -511,6 +511,29 @@ app.post('/api/signupStudent', function (req, res, next) {
         res.sendStatus(200);
     });
 });
+app.post('/api/geteditedStudent', function(req,res){
+    console.log(req.body.query)
+    Student.findById(req.body.query, function(err,student){
+        if(err)res.send(err);
+
+        res.json(student)
+    })
+});
+
+app.post('/api/editStudent', function (req,res) {
+    console.log(req.body)
+    Student.findById(req.body.userID, function(err, user){
+        user.username= req.body.username;
+        user.password= req.body.password;
+        user.fullname= req.body.fullname;
+        user.save(function (err) {
+            if(err) res.send(err);
+
+            res.json(user)
+        })
+    })
+
+})
 
 //hladaj slovo podla nazvu
 app.post('/api/hladaj', function (req, res) {
@@ -628,6 +651,18 @@ app.post('/photoStudent', function (req, res) {
     })
 
 });
+app.post('/editTestViss', function (req,res) {
+    console.log(req.body.vissibility);
+    Test.findById(req.body.testId,function(err,test){
+        if(err) res.send(err);
+
+        test.isVissible=req.body.vissibility
+        test.save(function(err){
+            if(err)res.send(err);
+        })
+    })
+    res.send(null)
+})
 
 //obrazky do testu a free write
 app.post('/imgskuska', function (req, res) {
@@ -740,6 +775,23 @@ app.post('/createtestText', function (req, res) {
     })
     res.status(200).send(null);
 })
+app.post('/editTestText',function(req,res){
+    console.log(req.body);
+    Test.findById(req.body.testId, function(err,test){
+        if(err)res.send(err)
+
+        test.testText=req.body.query;
+
+        test.save(function(err){
+            if (err) {
+                res.send(err)
+            }
+        })
+
+    })
+    res.status(200).send(null)
+})
+
 //vrati vsetky testy z databazy
 app.get('/api/alltests', function (req, res) {
     Test.find(function (err, tests) {
@@ -778,6 +830,14 @@ app.post('/testDone', function (req, res) {
     })
     //res.status(200).send(null);
 });
+app.delete('/deleteTestText', function (req,res) {
+    console.log(req.body)
+    Test.findByIdAndRemove(req.body.testId, function (err) {
+        if (err) res.send(err)
+
+    });
+    res.send(null)
+});
 
 //vrati text testu z databazy
 app.post('/getTestText', function (req, res) {
@@ -804,7 +864,8 @@ app.post('/saveStudentTest', function (req, res) {
         testText: req.body.query,
         Author: req.body.student,
         testId: req.body.testId,
-        testName: req.body.testName
+        testName: req.body.testName,
+        mistake: req.body.mistake
     })
     result.save(function (err, test) {
             if (err) {

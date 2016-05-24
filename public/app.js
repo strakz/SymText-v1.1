@@ -34,6 +34,10 @@ angular.module('SymText', ['ngCookies', 'ngResource', 'ngMessages', 'ngRoute','m
                 templateUrl: 'templates/editUser.html',
                 controller: 'EditUserCtrl'
             })
+            .when('/editstudent/:id', {
+                templateUrl: 'templates/editStudent.html',
+                controller: 'EditStudentCtrl'
+            })
             .when('/signupStudent', {
                 templateUrl: 'templates/signupStudent.html',
                 controller: 'SignupStudentCtrl'
@@ -127,6 +131,10 @@ angular.module('SymText', ['ngCookies', 'ngResource', 'ngMessages', 'ngRoute','m
             .when('/alltests',{
                 templateUrl: 'templates/AllTests.html',
                 controller: 'AllTestListCtrl'
+            })
+            .when('/editTest/:id',{
+                templateUrl: 'templates/editTest.html',
+                controller: 'EditTestCtrl'
             })
             .otherwise({
                 redirectTo: '/'

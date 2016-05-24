@@ -1,5 +1,5 @@
 angular.module('SymText')
-    .controller('CreateWordCtrl', ['$scope', '$http', '$alert', function ($scope, $http, $alert) {
+    .controller('CreateWordCtrl', ['$scope', '$http', '$alert','$location', function ($scope, $http, $alert, $location) {
         $scope.word = {singleSelect : null};
         var formdata = new FormData();
         //$scope.data = {singleSelect :null};
@@ -18,7 +18,9 @@ angular.module('SymText')
                         placement: 'top-right',
                         type: 'success',
                         duration: 3
+
                     });
+                    $location.path('/ucitelmenu');
                 })
                 .error(function (data) {
                     console.log('Error: ' + data);

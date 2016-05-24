@@ -29,6 +29,8 @@
                                 <td class="center-form">{{test.testText}}</td>
                                 <td class="center-form" ng-if="test.isVissible ===true">Áno</td><td class="center-form" ng-if="!test.isVissible ===true">Nie</td>
                                 <td><div class="col-xs-3 text-right"><button ng-click="edit(this)" class="btn btn-primary btn-sm"><span>Upraviť</span></button></div></td>
+                                <td><div class="col-xs-3 text-right"><button ng-click="editInfo(this)" class="btn btn-primary btn-sm"><span>Viditeľnosť</span></button></div></td>
+                                <td><div class="col-xs-3 text-right"><button ng-click="delete(this)" class="btn btn-danger btn-sm"><span>Vymazať</span></button></div></td>
                             </tr>
                             </tbody>
                         </table>
@@ -36,7 +38,8 @@
                 </div>
 
             </div>
-            <a href="/ucitelmenu" class="btn btn-lg btn-block btn-danger">Späť do menu</a>
+            <br>
+            <a href="/ucitelmenu" class="btn btn-lg btn-block btn-default">Späť do menu</a>
         </div>
     </div>
 </div>

@@ -1,5 +1,5 @@
 angular.module('SymText')
-    .controller('AddWordsCtrl', ['$scope', '$http', '$alert', function ($scope, $http, $alert) {
+    .controller('AddWordsCtrl', ['$scope', '$http', '$alert','$location', function ($scope, $http, $alert, $location) {
 
         //ulozenie slov a zaslanie na stranu servera na spracovanie a ulozenie
         $scope.addwords = function () {
@@ -17,6 +17,7 @@ angular.module('SymText')
                     .success(function (data) {
                             console.log('vykonane spravne');
                             console.log(data);
+                            $location.path('/ucitelmenu')
                         }
                     )
                     .error(function (data) {
